@@ -1,0 +1,75 @@
+{
+    "markers": [
+      {
+        "id": "1",
+        "meterNo": "rac1234",
+        "status":"active",
+        "latitude": 18.5204,
+        "longitude": 73.8567
+      },
+      {
+        "id": "2",
+        "meterNo": "rac2345",
+        "status":"active",
+        "latitude": 18.5308,
+        "longitude": 73.8475
+      },
+      {
+        "id": "3",
+        "meterNo": "rac3456",
+        "status":"active",
+        "latitude": 18.5167,
+        "longitude": 73.8563
+      },
+      {
+        "id": "4",
+        "meterNo": "rac4567",
+        "status":"active",
+        "latitude": 18.5353,
+        "longitude": 73.8298
+      },
+      {
+        "id": "5",
+        "meterNo": "rac5678",
+        "status":"active",
+        "latitude": 18.5196,
+        "longitude": 73.8554
+      },
+      {
+        "id": "6",
+        "meterNo": "rac6789",
+        "status":"inactive",
+        "latitude": 18.5336,
+        "longitude": 73.8298
+      },
+      {
+        "id": "7",
+        "meterNo": "rac7890",
+        "status":"inactive",
+        "latitude": 18.5378,
+        "longitude": 73.831
+      },
+      {
+        "id": "8",
+        "meterNo": "rac8901",
+        "status":"inactive",
+        "latitude": 18.5344,
+        "longitude": 73.8288
+      },
+      {
+        "id": "9",
+        "meterNo": "rac9012",
+        "status":"inactive",
+        "latitude": 18.5283,
+        "longitude": 73.8743
+      },
+      {
+        "id": "10",
+        "meterNo": "rac0123",
+        "status":"inactive",
+        "latitude": 18.5235,
+        "longitude": 73.8727
+      }
+    ]
+  }
+  

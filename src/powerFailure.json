@@ -1,0 +1,192 @@
+[
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-07T07:04:52",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-07T07:05:08",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-07T07:33:43",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-07T20:07:03",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-07T21:52:03",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-09T00:54:00",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-09T01:15:19",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-09T01:15:30",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-09T03:46:18",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-09T03:51:18",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-09T04:29:00",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-09T04:41:39",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-09T06:33:28",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-10T00:39:50",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-10T02:11:02",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-10T02:11:40",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-10T02:14:44",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-10T03:49:21",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-10T03:49:40",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-10T07:08:25",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-10T08:31:31",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-10T22:53:44",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-11T00:42:46",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-11T01:35:05",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-11T03:35:38",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-14T01:43:27",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-14T01:43:28",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-14T01:48:19",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-14T01:48:22",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-14T01:48:31",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-14T01:48:37",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-14T01:49:17",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-14T01:49:23",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-14T01:49:30",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-14T01:50:58",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-14T01:51:04",
+      "eventCode": "102"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-14T02:17:03",
+      "eventCode": "101"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2023-02-15T07:55:38",
+      "eventCode": "102"
+    }
+  ]

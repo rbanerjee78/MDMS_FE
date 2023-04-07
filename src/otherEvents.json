@@ -1,0 +1,36 @@
+[
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2022-12-15T04:22:28",
+      "eventCode": "209",
+      "instantaneous_current_L1": "0",
+      "instantaneous_current_L2": "0",
+      "instantaneous_current_L3": "0",
+      "instantaneous_voltage_L1": "0",
+      "instantaneous_voltage_L2": "0",
+      "instantaneous_voltage_L3": "0",
+      "power_factor_L1": "0",
+      "power_factor_L2": "0",
+      "power_factor_L3": "0",
+      "active_engy_import_Q1Q4": "0",
+      "active_engy_export_Q2Q3": "0",
+      "id_india": "20"
+    },
+    {
+      "meterSerialNumber": "RAC1234",
+      "dateTime": "2022-12-15T04:28:26",
+      "eventCode": "210",
+      "instantaneous_current_L1": "0",
+      "instantaneous_current_L2": "0",
+      "instantaneous_current_L3": "0",
+      "instantaneous_voltage_L1": "0",
+      "instantaneous_voltage_L2": "0",
+      "instantaneous_voltage_L3": "0",
+      "power_factor_L1": "0",
+      "power_factor_L2": "0",
+      "power_factor_L3": "0",
+      "active_engy_import_Q1Q4": "0",
+      "active_engy_export_Q2Q3": "0",
+      "id_india": "20"
+    }
+  ]
