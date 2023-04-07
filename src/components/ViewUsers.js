@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -6,7 +6,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faPlus, faRefresh, faSearch, faUserMinus } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faPlus, faRefresh, faSearch, faUserGroup, faUserMinus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -14,7 +14,6 @@ import moment from 'moment';
 
 export default function ViewUsers() {
   const [users, setUsers] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
   const [show, setShow] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [loading, setLoading] = useState(false); // Add loading state
@@ -30,7 +29,7 @@ export default function ViewUsers() {
     fetchUsers();
   
   };
-  const [key, setKey] = useState('details');
+
   const [selectedUser, setSelectedUser] = useState(null);
 
   const handleSelectAll = () => {
@@ -52,13 +51,13 @@ const config = {
 };
 
 
-  const fetchUsers = async () => {
+const fetchUsers = useCallback(async () => {
     setLoading(true); // Set loading to true before fetching data
     try {
       const response = await axios.get("https://localhost:1100/api/customers", config);
      // console.log(response);
       setUsers(response.data.data);
-      setTotalPages(response.data.totalPages);
+     // setTotalPages(response.data.totalPages);
       setLoading(false); // Set loading to false after fetching data
     } catch (error) {
       console.error(error.response.status, error.response.data.message);
@@ -66,11 +65,11 @@ const config = {
       //console.error(error);
      // setLoading(false); // Set loading to false on error as well
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
  
 
   
@@ -267,7 +266,7 @@ const config = {
   return (
     <div className='container my-3 '>
       <div className=" main-card py-3 px-3">
-        <h5 className="fw-bold">View Users</h5>
+        <h5 className="fw-bold"><FontAwesomeIcon icon={faUserGroup} className='me-2'/>View Users</h5>
         <div className='widget-card shadow-lg mb-4'>
         
           <div className='d-flex'>

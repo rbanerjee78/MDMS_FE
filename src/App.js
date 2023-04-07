@@ -1,14 +1,13 @@
 import React, { lazy, Suspense, useState, useEffect } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NoPage from "./components/NoPage";
 import Sidebar from "./components/Sidebar";
-import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 import { data } from "jquery";
-import { useFormik } from 'formik';
 
 
 const Home = lazy(() => import("./components/Home"));
@@ -22,6 +21,7 @@ const CreateUser = lazy(() => import("./components/CreateUser"));
 const CreateAsset = lazy(() => import("./components/CreateAsset"));
 const LoadProfilePatterns = lazy(() => import("./components/LoadProfilePatterns"));
 const NetMeteringBilling = lazy(() => import("./components/NetMeteringBilling"));
+const DeviceManagement =lazy(() =>import ("./components/DeviceManagement"));
 
 
 
@@ -230,6 +230,7 @@ function App() {
                   <Route exact path="/netmeteringbilling" element={<NetMeteringBilling />} />
                   <Route exact path="/createuser" element={<CreateUser />} />
                   <Route exact path="/createasset" element={<CreateAsset />} />
+                  <Route exact path="/devicemanagement" element={<DeviceManagement />} />
                   <Route exact path="*" element={<NoPage />} />
                 </Routes>
               </Suspense>
