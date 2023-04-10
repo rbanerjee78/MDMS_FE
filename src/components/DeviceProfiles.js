@@ -7,7 +7,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 
-export default function DeviceManagement() {
+export default function DeviceProfiles() {
 
 
     const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -18,6 +18,11 @@ export default function DeviceManagement() {
     const [devices, setDevices] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [selectAll, setSelectAll] = useState(false);
+    const handleSelectAll = () => {
+      setSelectAll(!selectAll);
+    };
+
     
     
 
@@ -50,7 +55,7 @@ export default function DeviceManagement() {
         return <div>Error: {error.message}</div>;
       }
     
-
+    
     
     
     return (
@@ -114,9 +119,13 @@ export default function DeviceManagement() {
                         <thead>
                             <tr>
                                 <th>
-                                    <input type="checkbox" className='checkbox' />
+                                <input
+                  type="checkbox"
+                  className="checkbox"
+                  checked={selectAll}
+                  onChange={handleSelectAll}
+                />
                                 </th>
-                               <th>Profile ID</th>
                                 <th>
                                     Name
                                 </th>
@@ -139,9 +148,11 @@ export default function DeviceManagement() {
         {devices && devices.length > 0 && devices.map((device, idx) => (
           <tr key={idx}>
             <td>
-            <input type="checkbox" className='checkbox' value={device.id.id} />
+            <input type="checkbox"
+                    className='checkbox'
+                    checked={selectAll}
+                    onChange={() => { }} />
             </td>
-            <td>{device.id.id}</td>
             <td>{device.name}</td>
             <td>{device.description}</td>
             <td><img src={device.image} alt={device.name} style={{}} /></td>

@@ -21,7 +21,7 @@ const CreateUser = lazy(() => import("./components/CreateUser"));
 const CreateAsset = lazy(() => import("./components/CreateAsset"));
 const LoadProfilePatterns = lazy(() => import("./components/LoadProfilePatterns"));
 const NetMeteringBilling = lazy(() => import("./components/NetMeteringBilling"));
-const DeviceManagement = lazy(() =>import ("./components/DeviceManagement"));
+const DeviceProfiles = lazy(() =>import ("./components/DeviceProfiles"));
 const CustomerDevices = lazy(()=> import( "./components/CustomerDevices"));
 const TenantDevices = lazy(()=> import( "./components/TenantDevices"));
 
@@ -232,7 +232,7 @@ function App() {
                   <Route exact path="/netmeteringbilling" element={<NetMeteringBilling />} />
                   <Route exact path="/createuser" element={<CreateUser />} />
                   <Route exact path="/createasset" element={<CreateAsset />} />
-                  <Route exact path="/devicemanagement" element={<DeviceManagement />} />
+                  <Route exact path="/devicemanagement" element={<DeviceProfiles />} />
                   <Route exact path="/customerdevices" element={<CustomerDevices />} />
                   <Route exact path="/tenantdevices" element={<TenantDevices />} />
 
