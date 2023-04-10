@@ -190,8 +190,13 @@ const fetchUsers = useCallback(async () => {
   };
 
 
+  //devices list code
+
+ 
+  
+
   return (
-    <Modal show={show} onHide={handleClose} size="xl" animation={false}>
+    <Modal show={show} onHide={handleClose} size="xl" >
       <Modal.Header closeButton className='bg-violet'>
         <Modal.Title>Customer Details</Modal.Title>
       </Modal.Header>
@@ -201,7 +206,7 @@ const fetchUsers = useCallback(async () => {
           id="controlled-tab-example"
           defaultActiveKey="details"
           activeKey={key}
-          animation={false}
+         
           onSelect={(k) => setKey(k)}
           className="mb-3"
           fill
@@ -235,6 +240,11 @@ const fetchUsers = useCallback(async () => {
   
             </div>
           </Tab>
+          <Tab eventKey="devices" title="Devices">
+
+            
+  
+  </Tab>
           <Tab eventKey="profile" title="Attributes">
   
           </Tab>
@@ -352,7 +362,9 @@ const fetchUsers = useCallback(async () => {
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           }
-            <div> {loading && <img src="../../assets/images/spinner.gif" alt="Loading..." />} </div>
+            <div> {loading && <div className="d-flex justify-content-center mt-4"><div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div></div>} </div>
             <tbody>
             {/* Show loading gif if loading is true */}
               {users.map((user,index) => (

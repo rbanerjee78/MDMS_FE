@@ -21,7 +21,9 @@ const CreateUser = lazy(() => import("./components/CreateUser"));
 const CreateAsset = lazy(() => import("./components/CreateAsset"));
 const LoadProfilePatterns = lazy(() => import("./components/LoadProfilePatterns"));
 const NetMeteringBilling = lazy(() => import("./components/NetMeteringBilling"));
-const DeviceManagement =lazy(() =>import ("./components/DeviceManagement"));
+const DeviceManagement = lazy(() =>import ("./components/DeviceManagement"));
+const CustomerDevices = lazy(()=> import( "./components/CustomerDevices"));
+const TenantDevices = lazy(()=> import( "./components/TenantDevices"));
 
 
 
@@ -122,7 +124,7 @@ function App() {
       localStorage.setItem('authToken', authToken); // store the token in the browser's local storage
       localStorage.setItem('refreshToken', refreshToken); // store the token in the browser's local storage  
       setLoginResponse(response);
-      console.log(response)
+     // console.log(response)
 
     } catch (error) {
       console.error(data)
@@ -231,6 +233,9 @@ function App() {
                   <Route exact path="/createuser" element={<CreateUser />} />
                   <Route exact path="/createasset" element={<CreateAsset />} />
                   <Route exact path="/devicemanagement" element={<DeviceManagement />} />
+                  <Route exact path="/customerdevices" element={<CustomerDevices />} />
+                  <Route exact path="/tenantdevices" element={<TenantDevices />} />
+
                   <Route exact path="*" element={<NoPage />} />
                 </Routes>
               </Suspense>

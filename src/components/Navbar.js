@@ -46,6 +46,17 @@ const Navbar = (props) => {
             <NavLink className="nav-link" to="/viewusers">User Management</NavLink>
           </li>
 
+          <li className="nav-item dropdown">
+            <Link className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Devices
+            </Link>
+            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+              <Link className="dropdown-item" to="/customerdevices">Customer Devices</Link>
+              <Link className="dropdown-item" to="/tenantdevices">Tenant Devices</Link>
+            
+            </div>
+          </li>
+
 
           <li className="nav-item dropdown">
             <Link className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

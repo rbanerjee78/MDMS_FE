@@ -44,9 +44,7 @@ export default function DeviceManagement() {
           });
       }, [authToken]);
     
-      if (loading) {
-        return <div>{loading && <img src="../../assets/images/spinner.gif" alt="Loading..." />} </div>;
-      }
+     
     
       if (error) {
         return <div>Error: {error.message}</div>;
@@ -116,6 +114,10 @@ export default function DeviceManagement() {
                         <thead>
                             <tr>
                                 <th>
+                                    <input type="checkbox" className='checkbox' />
+                                </th>
+                               <th>Profile ID</th>
+                                <th>
                                     Name
                                 </th>
                                 <th>
@@ -131,11 +133,18 @@ export default function DeviceManagement() {
                             </tr>
                             </thead>
                             <tbody>
+                            <div> {loading && <div className="d-flex justify-content-center mt-4"><div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div></div>} </div>
         {devices && devices.length > 0 && devices.map((device, idx) => (
           <tr key={idx}>
+            <td>
+            <input type="checkbox" className='checkbox' value={device.id.id} />
+            </td>
+            <td>{device.id.id}</td>
             <td>{device.name}</td>
             <td>{device.description}</td>
-            <td><img src={device.image} alt={device.name} /></td>
+            <td><img src={device.image} alt={device.name} style={{}} /></td>
             <td>{moment(device.createdTime).format('L')}</td>
           </tr>
         ))}
