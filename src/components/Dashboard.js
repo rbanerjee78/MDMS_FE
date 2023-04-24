@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactEcharts from "echarts-for-react";
 import * as echarts from 'echarts';
-import moment from 'moment/moment';
 
 function Dashboard() {
 
@@ -366,7 +365,9 @@ bottom: 10,
         data: [
           [172.7, 105.2],
           [153.4, 42]
-        ]
+        ],
+        color: '#FF7F7F'
+        
       },
       {
         type: 'scatter',
@@ -423,10 +424,16 @@ bottom: 10,
         [156.2, 60.0], [149.9, 46.8], [169.5, 57.3], [160.0, 64.1], [175.3, 63.6],
         [169.5, 67.3], [160.0, 75.5], [172.7, 68.2], [162.6, 61.4], [157.5, 76.8],
         [176.5, 71.8], [164.4, 55.5], [160.7, 48.6], [174.0, 66.4], [163.8, 67.3]
-        ]
-      }
+        ],
+        itemStyle: {
+          color: '#FFA07A' // set a single color for all data points
+        }
+      },
+      
     ]
   };
+
+  
 
   return (
     <div className='container my-3' >

@@ -61,6 +61,11 @@ export default function Sidebar(props) {
               <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'Device Profiles'}
             </Link>
           </li>
+          <li className='text-left text-truncate'>
+            <Link to="/telemetry" className="nav-link link-dark  ps-2">
+              <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'Telemetry Data'}
+            </Link>
+          </li>
            <li className='text-left text-truncate'>
             <Link to="/assetmanagement" className="nav-link link-dark  ps-2">
               <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'Asset Management'}

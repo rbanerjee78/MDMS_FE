@@ -18,11 +18,15 @@ export default function ViewUsers() {
   const [selectAll, setSelectAll] = useState(false);
   const [loading, setLoading] = useState(false); // Add loading state
   const [success, setSuccess] = useState(false);
+  const [devices, setDevices] = useState([]);
+  const [userById, setUserById] = useState([]);
 
 
   const handleShow = (user) => {
-    setSelectedUser(user);
+    setSelectedUser(user.id);
     setShow(true);
+    fetchDevices(user.id)
+    fetchUserById(user.id)
   };
   const handleClose = () => {
     setShow(false);
@@ -49,6 +53,47 @@ const config = {
   },
 
 };
+
+const deviceconfig = {
+  headers: {    
+    Accept:'*/*',
+    'X-Authorization':`Bearer ${authToken}`    
+  },
+  params: {
+    pageSize: 5,
+    page: 0,
+  },
+
+};
+
+const fetchDevices = useCallback(async (userId) => {
+  setLoading(true); // Set loading to true before fetching data
+  try {
+    const response = await axios.get(`https://localhost:1100/api/customer/${userId}/devices`, deviceconfig);
+    setDevices(response.data.data);
+    //console.log(response.data.data);
+    setLoading(false); // Set loading to false after fetching data
+  } catch (error) {
+   // console.error(error.response.status, error.response.data.message);
+    setLoading(false); // Set loading to false on error as well
+  }
+}, []);
+
+
+
+const fetchUserById = useCallback(async (userId) => {
+  //setLoading(true); // Set loading to true before fetching data
+  try {
+    const response = await axios.get(`https://localhost:1100/api/customer/${userId}`, config);
+    setUserById(response.data);
+    //console.log(response.data);
+   // setLoading(false); // Set loading to false after fetching data
+  } catch (error) {
+    console.error(error.response.status, error.response.data.message);
+   // setLoading(false); // Set loading to false on error as well
+  }
+}, []);
+
 
 
 const fetchUsers = useCallback(async () => {
@@ -196,7 +241,7 @@ const fetchUsers = useCallback(async () => {
   
 
   return (
-    <Modal show={show} onHide={handleClose} size="xl" >
+    <Modal show={show} onHide={handleClose} size="xl" animation={false}>
       <Modal.Header closeButton className='bg-violet'>
         <Modal.Title>Customer Details</Modal.Title>
       </Modal.Header>
@@ -217,32 +262,37 @@ const fetchUsers = useCallback(async () => {
             <div className="alert alert-success" role="alert">User updated successfully!</div>
           }
               <div className='form-group d-grid mb-3'>
-                <label>Title<input className='form-control form-control-sm ' placeholder='Title' value={userTitle} onChange={handleTitleChange} /></label>
+                <label>Title<input className='form-control form-control-sm ' placeholder='Title' value={userById.title} onChange={handleTitleChange} /></label>
               </div>             
               <div className='form-group  d-grid mb-3'>
-                <label>Country<input className='form-control form-control-sm ' placeholder='Country' value={userCountry} onChange={handleCountryChange} /></label>
+                <label>Country<input className='form-control form-control-sm ' placeholder='Country' value={userById.country} onChange={handleCountryChange} /></label>
               </div>
               <div className='form-group  d-grid mb-3'>
-                <label>State<input className='form-control form-control-sm ' placeholder='State' value={userState}
+                <label>State<input className='form-control form-control-sm ' placeholder='State' value={userById.state}
                   onChange={handleStateChange} /></label>
               </div>
               <div className='form-group  d-grid mb-3'>
-                <label>City<input className='form-control form-control-sm ' placeholder='City' value={userCity}
+                <label>City<input className='form-control form-control-sm ' placeholder='City' value={userById.city}
                   onChange={handleCityChange} /></label>
               </div>
               <div className='form-group  d-grid mb-3'>
-                <label>ZipCode<input className='form-control form-control-sm ' placeholder='ZipCode' value={userZip} onChange={handleZipChange} /></label>
+                <label>ZipCode<input className='form-control form-control-sm ' placeholder='ZipCode' value={userById.zip} onChange={handleZipChange} /></label>
               </div>
               <div className='form-group  d-grid mb-3'>
-                <label>Address<input className='form-control form-control-sm ' placeholder='Address' value={userAddress} onChange={handleAddressChange} /></label>
+                <label>Address<input className='form-control form-control-sm ' placeholder='Address' value={userById.address} onChange={handleAddressChange} /></label>
               </div>
   
   
             </div>
           </Tab>
-          <Tab eventKey="devices" title="Devices">
-
-            
+          <Tab eventKey="devices" title="Devices" >
+          {devices.map((device) => (<div key={device.id}>
+    <h3>Device Name: {device.name}</h3>
+    <p>Description: {device.additionalInfo.description}</p>
+    {/* add other device properties as needed */}
+  </div>
+))}
+         
   
   </Tab>
           <Tab eventKey="profile" title="Attributes">
@@ -377,7 +427,7 @@ const fetchUsers = useCallback(async () => {
                     className='checkbox'
                     checked={selectAll}
                     onChange={() => { }} /></div></td>
-                  <td><Link onClick={() => handleShow(user)}>{user?.title}</Link></td>
+                  <td><Link onClick={() => handleShow(user.id)}>{user?.title}</Link></td>
                   <td>{user?.email}</td>
                   <td>{user?.id.entityType}</td>
                  <td>{moment(user.createdTime).format('L')}</td> 
@@ -406,6 +456,7 @@ const fetchUsers = useCallback(async () => {
         <>
           <UserModal
             user={selectedUser}
+            device={devices}
             show={show}
             onHide={() => {
               setShow(false);

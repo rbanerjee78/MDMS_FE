@@ -24,6 +24,7 @@ const NetMeteringBilling = lazy(() => import("./components/NetMeteringBilling"))
 const DeviceProfiles = lazy(() =>import ("./components/DeviceProfiles"));
 const CustomerDevices = lazy(()=> import( "./components/CustomerDevices"));
 const TenantDevices = lazy(()=> import( "./components/TenantDevices"));
+const Telemetry = lazy(()=> import( "./components/Telemetry"));
 
 
 
@@ -146,6 +147,22 @@ function App() {
     }
   }, []);
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate a delay to demonstrate the loading screen
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center mt-4"><div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div></div>
+    );
+  }
 
 
   //Login code ends
@@ -235,6 +252,8 @@ function App() {
                   <Route exact path="/devicemanagement" element={<DeviceProfiles />} />
                   <Route exact path="/customerdevices" element={<CustomerDevices />} />
                   <Route exact path="/tenantdevices" element={<TenantDevices />} />
+                  <Route exact path="/telemetry" element={<Telemetry />} />
+
 
                   <Route exact path="*" element={<NoPage />} />
                 </Routes>

@@ -37,7 +37,7 @@ export default function DeviceProfiles() {
           .then((response) => {
             if (response.data.data && response.data.data.length > 0) {
               setDevices(response.data.data);
-              console.log(response.data.data);
+             // console.log(response.data.data);
             } else {
               console.log('No devices found');
             }
