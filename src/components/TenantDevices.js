@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useCallback } from "react";
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faPlus, faRefresh } from '@fortawesome/free-solid-svg-icons';
@@ -13,9 +13,16 @@ export default function TenantDevices() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
+  const [showAssignModal, setShowAssignModal] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
-  const [selectAll, setSelectAll] = useState(false);
   const [key, setKey] = useState('basic');
+  const [deviceId, setDeviceId] = useState(null);
+
+
+
+
+
+  
 
 
 
@@ -38,20 +45,31 @@ export default function TenantDevices() {
     fetchData();
   }, []); // The empty dependency array ensures that this effect runs only once, after the initial render.
 
-  const handleSelectAll = () => {
-    setSelectAll(!selectAll);
-  };
+
 
 
   const handleClick = (device) => {
     setSelectedDevice(device);
-    console.log(device)
     setShow(true);
   }
 
   const handleClose = () => {
     setShow(false);
+    
   }
+
+
+  const handleAssignModal = (id) => {
+    setShowAssignModal(true);
+    setDeviceId(id);
+    
+  };
+
+  const handleCloseAssignModal = () => {
+    setShowAssignModal(false);
+  };
+
+ 
 
 
   function DeviceModal({ device, show, onHide }) {
@@ -63,11 +81,11 @@ export default function TenantDevices() {
       </Modal.Header>
 
       <Modal.Body>
-      <Tabs
+        <Tabs
           id="controlled-tab-example"
           defaultActiveKey="info"
           activeKey={key}
-         
+
           onSelect={(k) => setKey(k)}
           className="mb-3"
           fill
@@ -77,38 +95,95 @@ export default function TenantDevices() {
             <table className="table table-striped table-hover">
               <thead><tr><th>Device Name</th></tr></thead>
               <tbody>
-              <tr> <td>{device.name}</td></tr>
+                <tr> <td>{device.name}</td></tr>
               </tbody>
             </table>
-            </Tab>
+          </Tab>
           <Tab eventKey="info" title="Additional Info" >
-          <table className="table table-striped table-hover ">
+            <table className="table table-striped table-hover ">
               <thead><tr><th>Device Description</th><th>Device Configuration</th></tr></thead>
               <tbody>
-              <tr><td style={{wordBreak:''}}><p>{device.additionalInfo.description}</p></td><td>{device.deviceData.configuration.type}</td></tr>
+                <tr><td style={{ wordBreak: '' }}><p>{device.additionalInfo.description}</p></td><td>{device.deviceData.configuration.type}</td></tr>
               </tbody>
             </table>
-          
-            </Tab>
-            </Tabs>
-            <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-            </Modal.Footer>
-        </Modal.Body>
+
+          </Tab>
+        </Tabs>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal.Body>
 
     </Modal>);
   }
 
 
+
+  function AssignModal({ deviceid, showAssignModal, onHide }) {
+    const [users, setUsers] = useState([]);
+
+    const authToken = localStorage.getItem('authToken');
+
+const config = {
+  headers: {    
+    Accept:'*/*',
+    'X-Authorization':`Bearer ${authToken}`    
+  },
+  params: {
+    pageSize: 10,
+    page: 0,
+  },
+
+};
+
+useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("https://localhost:1100/api/customers", config);
+      setUsers(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchUsers();
+}, []);
+    
+  
+
+ //console.log(deviceid)
+    return (
+      <Modal size="xl" show={showAssignModal} onHide={onHide} deviceId={deviceId} animation={false}>
+        <Modal.Header closeButton className="bg-violet">
+          <Modal.Title>Assign Devices To Customer</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="form-group mb-3"><p><span className="fw-bold fs-2x">Assign this device with ID:</span> {deviceid}</p></div>
+         <div className="row"><div className="col-md-6"> <select className="form-select form-select-sm mb-3">
+         {users.map(user => (
+          <option key={user.id} value={user.id}>{user.name}</option>
+          ))}
+          
+          </select></div></div>
+         <div className="row"><div className="col-md-6"> <button className="btn btn-primary btn-sm mb-3">Assign</button></div>
+         </div>
+        </Modal.Body>
+      </Modal>
+    );
+  }
+
+
   return (
+    
     <div className='container my-3 '>
       <div className=" main-card py-3 px-3">
         <h5 className="fw-bold"><FontAwesomeIcon icon={faSearch} className='me-2' />Tenant Devices</h5>
         <div className='widget-card table-responsive shadow-lg' style={{ "minHeight": "50vh" }}>
 
 
+      
 
           <div className='d-flex mb-3'>
 
@@ -165,15 +240,11 @@ export default function TenantDevices() {
           <table className="table table-striped table-hover position-relative">
             <thead>
               <tr>
-                <th> <input
-                  type="checkbox"
-                  className="checkbox"
-                  checked={selectAll}
-                  onChange={handleSelectAll}
-                /></th>
+                <th> </th>
                 <th>Name</th>
-               
+
                 <th>Created Time</th>
+                <th>Assign</th>
               </tr>
             </thead>
             <tbody>
@@ -187,22 +258,43 @@ export default function TenantDevices() {
                 <tr key={device.id.id}>
                   <td><input type="checkbox"
                     className='checkbox'
-                    checked={selectAll}
-                    onChange={() => { }} /></td>
-                  <td><Link onClick={() => handleClick(device)}>{device.name}</Link></td>                 
+
+                    value={device.id.id} /></td>
+                  <td><Link onClick={() => handleClick(device)}>{device.name}</Link></td>
                   <td>{new Date(device.createdTime).toLocaleString()}</td>
+                  <td><button className="btn btn-light btn-sm border-secondary" onClick={() => handleAssignModal(device.id.id)}>
+          Assign Device
+        </button>
+                  </td>
                 </tr>
               ))}
 
 
             </tbody>
           </table>
+
+          {showAssignModal && (<AssignModal deviceid={deviceId} showAssignModal={showAssignModal}
+              onHide={() => {
+                setShowAssignModal(false);
+  
+              }}
+            />)}
+
           {show && (<DeviceModal device={selectedDevice} show={show}
             onHide={() => {
               setShow(false);
 
             }}
+
+           
           />)}
+
+
+
+
+        
+
+
         </div></div></div>
 
 

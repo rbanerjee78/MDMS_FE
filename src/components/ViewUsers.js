@@ -286,13 +286,16 @@ const fetchUsers = useCallback(async () => {
             </div>
           </Tab>
           <Tab eventKey="devices" title="Devices" >
-          {devices.map((device) => (<div key={device.id}>
-    <h3>Device Name: {device.name}</h3>
-    <p>Description: {device.additionalInfo.description}</p>
-    {/* add other device properties as needed */}
-  </div>
-))}
+
+          <table class="table table-striped table-hover position-relative"> 
          
+          {devices.map((device) => (
+             <>
+          <tr key={device.id}>
+<th>Device Name:</th><th>Description:</th></tr><tr><td>{device.name}</td><td>{device.additionalInfo.description}</td></tr>
+</> 
+))}  
+      </table> 
   
   </Tab>
           <Tab eventKey="profile" title="Attributes">

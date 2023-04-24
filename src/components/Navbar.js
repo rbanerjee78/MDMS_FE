@@ -51,7 +51,6 @@ const Navbar = (props) => {
              Devices
             </Link>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <Link className="dropdown-item" to="/customerdevices">Customer Devices</Link>
               <Link className="dropdown-item" to="/tenantdevices">Tenant Devices</Link>
             
             </div>
