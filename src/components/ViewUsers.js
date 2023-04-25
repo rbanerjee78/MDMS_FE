@@ -71,7 +71,7 @@ const fetchDevices = useCallback(async (userId) => {
   try {
     const response = await axios.get(`https://localhost:1100/api/customer/${userId}/devices`, deviceconfig);
     setDevices(response.data.data);
-    //console.log(response.data.data);
+    console.log(response.data.data);
     setLoading(false); // Set loading to false after fetching data
   } catch (error) {
    // console.error(error.response.status, error.response.data.message);
@@ -287,14 +287,14 @@ const fetchUsers = useCallback(async () => {
           </Tab>
           <Tab eventKey="devices" title="Devices" >
 
-          <table class="table table-striped table-hover position-relative"> 
-         
+          <table className="table table-striped table-hover"> 
+          <thead><tr><th>Device Name:</th><th>Description:</th></tr></thead>
+          <tbody>
           {devices.map((device) => (
              <>
-          <tr key={device.id}>
-<th>Device Name:</th><th>Description:</th></tr><tr><td>{device.name}</td><td>{device.additionalInfo.description}</td></tr>
+          <tr key={device.id}><td>{device.name}</td><td>{device.additionalInfo?.description}</td></tr>
 </> 
-))}  
+))}  </tbody>
       </table> 
   
   </Tab>
@@ -391,6 +391,10 @@ const fetchUsers = useCallback(async () => {
 
           <div className='border-bottom pb-3'></div>
 
+          <div> {loading && <div className="d-flex justify-content-center mt-4"><div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div></div>} </div>
+
 
           <table className="table table-striped table-hover position-relative">
             <thead>
@@ -412,19 +416,17 @@ const fetchUsers = useCallback(async () => {
             </thead>
             {success &&
             <div className="alert alert-success position-absolute top-0 start-50 translate-middle alert-dismissible" role="alert">User updated successfully!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           }
-            <div> {loading && <div className="d-flex justify-content-center mt-4"><div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div></div>} </div>
+          
             <tbody>
-            {/* Show loading gif if loading is true */}
-              {users.map((user,index) => (
+          
+              {users.map((user) => (
                 <>
               
               
-                <tr key={`${user.id}-${index}`}>
+                <tr key={user.id.id} id={user.id.id}>
                   
                   <td><div className="d-inline-block"><input type="checkbox"
                     className='checkbox'
