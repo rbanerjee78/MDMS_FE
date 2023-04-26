@@ -124,6 +124,8 @@ export default function TenantDevices() {
   function AssignModal({ deviceid, showAssignModal, onHide }) {
     const [users, setUsers] = useState([]);
     const [selectedCustomerId, setSelectedCustomerId] = useState(users.length > 0 ? users[0].id : '');
+    const [success, setSuccess] = useState(false);
+
 
     const authToken = localStorage.getItem('authToken');
 
@@ -164,10 +166,11 @@ export default function TenantDevices() {
     const handleAssignDevice = async () => {
       try {
         let url = `https://localhost:1100/api/customer/${selectedCustomerId}/device/${deviceid}`;
-        console.log(url);
+       // console.log(url);
         const response = await fetch(url, assignconfig);
         const data = await response.json();
-        console.log(data);
+       // console.log(data);
+        setSuccess(true);
       } catch (error) {
         console.error(error);
       }
@@ -184,7 +187,9 @@ export default function TenantDevices() {
 
 
         <Modal.Body className="border rounded border-secondary mx-3 my-3 px-3 py-3">
-
+        {success &&
+            <div className="alert alert-success" role="alert">Device assigned successfully!</div>
+          }
           <div className="row"><div className="form-group col-md-6"><label className="d-flex flex-column">Device<input disabled type="text" className="form-control-sm mb-3" value={deviceid} /></label></div></div>
 
           <div className="row"><div className="form-group  col-md-6">

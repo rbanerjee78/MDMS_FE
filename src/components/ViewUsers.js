@@ -6,7 +6,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faPlus, faRefresh, faSearch, faUserGroup, faUserMinus } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faMinus, faPlus, faRefresh, faSearch, faUserGroup, faUserMinus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -175,6 +175,7 @@ const fetchUsers = useCallback(async () => {
   const [userZip, setUserZip] = useState(user.zip);
   const [userAddress, setUserAddress] = useState(user.address);
   const [key, setKey] = useState('details');
+  const [successdevice, setsuccessdevice] = useState(false);
 
   const updateUser = async (id, userCity, userState, userCountry, userTitle, userZip, userAddress) => {
     try {
@@ -235,6 +236,37 @@ const fetchUsers = useCallback(async () => {
   };
 
 
+  const handleUnassign = async (event, deviceid) =>{
+    event.preventDefault(); 
+    const headers = {
+      'X-Authorization': `Bearer ${authToken}`,
+      'Content-Type': 'application/json'
+    };
+
+     await fetch(`https://localhost:1100/api/customer/device/${deviceid}`, {
+      method: 'DELETE',
+      headers: headers
+    })
+    .then(response => {
+      if (response.ok) {
+        //alert('Device unassigned successfully.');
+        setsuccessdevice(true);
+        setTimeout(() => {
+          
+          handleClose();
+        }, 2000);
+
+      } else {
+        throw new Error('Failed to unassign device.');
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      alert('Failed to unassign device.');
+    });
+  }
+
+
   //devices list code
 
  
@@ -286,15 +318,20 @@ const fetchUsers = useCallback(async () => {
             </div>
           </Tab>
           <Tab eventKey="devices" title="Devices" >
-
+          {successdevice &&
+            <div className="alert alert-success" role="alert">Device updated successfully!</div>
+          }
           <table className="table table-striped table-hover"> 
-          <thead><tr><th>Device Name:</th><th>Description:</th></tr></thead>
+          <thead><tr><th>Device Name:</th><th>Description:</th><th>Unassign</th></tr></thead>
           <tbody>
           {devices.map((device) => (
              <>
-          <tr key={device.id}><td>{device.name}</td><td>{device.additionalInfo?.description}</td></tr>
+          <tr key={device.id.id} id={device.id.id}><td>{device.name}</td><td>{device.additionalInfo?.description}</td><td>
+            
+            <Link onClick={(event) => handleUnassign(event, device.id.id)} className='btn btn-danger btn-sm'>Unassign</Link></td></tr>
 </> 
-))}  </tbody>
+))}  
+</tbody>
       </table> 
   
   </Tab>
@@ -315,10 +352,10 @@ const fetchUsers = useCallback(async () => {
   
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" className='btn-sm' onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" onClick={() => updateUser(user.id, userCity, userState, userCountry, userTitle, userZip, userAddress)}>
+        <Button variant="primary"  className='btn-sm' onClick={() => updateUser(user.id, userCity, userState, userCountry, userTitle, userZip, userAddress)}>
   Save Changes
 </Button>
       </Modal.Footer>
