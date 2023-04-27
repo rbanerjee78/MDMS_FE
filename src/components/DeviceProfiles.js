@@ -23,6 +23,55 @@ export default function DeviceProfiles() {
       setSelectAll(!selectAll);
     };
 
+    function getDevices(authToken, setDevices, setLoading, setError) {
+      
+      setLoading(true);
+      axios.get(`https://localhost:1100/api/deviceProfiles?pageSize=5&page=0`, {
+        headers: {
+          Accept: 'application/json',
+          'X-Authorization':`Bearer ${authToken}`  
+        },
+      })
+        .then((response) => {
+          if (response.data.data && response.data.data.length > 0) {
+            setDevices(response.data.data);
+          } else {
+            console.log('No devices found');
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError(error);
+          setLoading(false);
+        });
+    }
+
+
+    async function setDeviceAsDefault(deviceid) {
+      try {
+       // console.log(deviceid);
+        const response = await fetch(`https://localhost:1100/api/deviceProfile/${deviceid}/default`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Authorization':`Bearer ${authToken}`  
+          }
+        });
+    
+        const data = await response.json();
+        console.log(data);
+        if (response.ok) {
+          // call getDevices to retrieve updated list
+          getDevices(authToken, setDevices, setLoading, setError);
+        } else {
+          console.log('Error setting device as default');
+        }
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
     
     
 
@@ -135,6 +184,7 @@ export default function DeviceProfiles() {
                                 <th>
                                     Image
                                 </th>
+                                <th>Default</th>
                                 <th>
                                 Created Time                        
                                 </th>
@@ -156,6 +206,7 @@ export default function DeviceProfiles() {
             <td>{device.name}</td>
             <td>{device.description}</td>
             <td><img src={device.image} alt={device.name} style={{}} /></td>
+            <td>{device.default?(<span className='badge bg-success'>Default</span>) : (<button className='btn border-secondary btn-sm' onClick={() => setDeviceAsDefault(device.id.id)}>Set As Default</button>)} </td>
             <td>{moment(device.createdTime).format('L')}</td>
           </tr>
         ))}
