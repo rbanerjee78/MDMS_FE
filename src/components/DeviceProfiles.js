@@ -164,6 +164,9 @@ export default function DeviceProfiles() {
 </div>
 
 <div className='border-bottom pb-3 table-responsive'></div>
+<div> {loading && <div className="d-flex justify-content-center mt-4"><div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div></div>} </div>
                     <table className="table table-striped table-hover position-relative">
                         <thead>
                             <tr>
@@ -192,9 +195,7 @@ export default function DeviceProfiles() {
                             </tr>
                             </thead>
                             <tbody>
-                            <div> {loading && <div className="d-flex justify-content-center mt-4"><div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div></div>} </div>
+                            
         {devices && devices.length > 0 && devices.map((device, idx) => (
           <tr key={idx}>
             <td>
