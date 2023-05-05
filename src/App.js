@@ -231,7 +231,7 @@ function App() {
 
           <div className="wrapper">
             <Sidebar />
-            <div className="right-container">
+            <div className="right-container bg-light">
 
               <Navbar handleClick={handleClick} isSidebarCollapsed={isSidebarCollapsed} username={loginresponse.username} />
               <Suspense fallback={<div className="d-flex justify-content-center mt-4"><div className="spinner-border text-primary" role="status">

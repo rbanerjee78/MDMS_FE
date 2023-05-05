@@ -41,17 +41,17 @@ function Dashboard() {
         barWidth: '60%',
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#83bff6' },
-            { offset: 0.5, color: '#188df0' },
-            { offset: 1, color: '#188df0' }
+            { offset: 0, color: '#a23aff' },
+            { offset: 0.5, color: '#c38dfc' },
+            { offset: 1, color: '#c38dfc' }
           ])
         },
         emphasis: {
           itemStyle: {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: '#2378f7' },
-              { offset: 0.7, color: '#2378f7' },
-              { offset: 1, color: '#83bff6' }
+              { offset: 0, color: '#a23aff' },
+              { offset: 0.7, color: '#c38dfc' },
+              { offset: 1, color: '#c38dfc' }
             ])
           }
         },
@@ -64,7 +64,7 @@ function Dashboard() {
 
 
  const daily = {
-    color: ['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00'],
+    color: ['#a23aff', '#3cb4fd', '#c38dfc', '#88d7ff', '#ff8dfc'],
     title: {
       text: ''
     },
@@ -115,11 +115,11 @@ function Dashboard() {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: 'rgb(128, 255, 165)'
+              color: '#a23aff'
             },
             {
               offset: 1,
-              color: 'rgb(1, 191, 236)'
+              color: '#c38dfc'
             }
           ])
         },
@@ -142,11 +142,11 @@ function Dashboard() {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: 'rgb(0, 221, 255)'
+              color: '#ff67cc'
             },
             {
               offset: 1,
-              color: 'rgb(77, 119, 255)'
+              color: '#ff8dfc'
             }
           ])
         },
@@ -169,11 +169,11 @@ function Dashboard() {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: 'rgb(55, 162, 255)'
+              color: '#3cb4fd'
             },
             {
               offset: 1,
-              color: 'rgb(116, 21, 219)'
+              color: '#88d7ff'
             }
           ])
         },
@@ -196,11 +196,11 @@ function Dashboard() {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: 'rgb(255, 0, 135)'
+              color: '#4e4e89'
             },
             {
               offset: 1,
-              color: 'rgb(135, 0, 157)'
+              color: '#a23aff'
             }
           ])
         },
@@ -234,7 +234,8 @@ function Dashboard() {
     },
     yAxis: {
       type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      
     },
     series: [
       {
@@ -244,7 +245,8 @@ function Dashboard() {
         emphasis: {
           focus: 'series'
         },
-        data: [320, 302, 301, 334, 390, 330, 320]
+        data: [320, 302, 301, 334, 390, 330, 320],
+        color: '#a23aff'
       },
       {
         name: 'Mail Ad',
@@ -253,7 +255,8 @@ function Dashboard() {
         emphasis: {
           focus: 'series'
         },
-        data: [120, 132, 101, 134, 90, 230, 210]
+        data: [120, 132, 101, 134, 90, 230, 210],
+        color: '#3cb4fd'
       },
       {
         name: 'Affiliate Ad',
@@ -263,7 +266,8 @@ function Dashboard() {
         emphasis: {
           focus: 'series'
         },
-        data: [220, 182, 191, 234, 290, 330, 310]
+        data: [220, 182, 191, 234, 290, 330, 310],
+        color:'#c38dfc'
       },
       {
         name: 'Video Ad',
@@ -273,7 +277,8 @@ function Dashboard() {
         emphasis: {
           focus: 'series'
         },
-        data: [150, 212, 201, 154, 190, 330, 410]
+        data: [150, 212, 201, 154, 190, 330, 410],
+        color:'#88d7ff'
       },
       {
         name: 'Search Engine',
@@ -283,7 +288,8 @@ function Dashboard() {
         emphasis: {
           focus: 'series'
         },
-        data: [820, 832, 901, 934, 1290, 1330, 1320]
+        data: [820, 832, 901, 934, 1290, 1330, 1320],
+        color:'#ff8dfc'
       }
     ]
   };
@@ -300,13 +306,10 @@ function Dashboard() {
       bottom: '-5%',
       right: '-5%',
       width: '500px'
-
     },
-
     tooltip: {
       trigger: 'item'
     },
-
     series: [
       {
         name: 'Access From',
@@ -318,15 +321,13 @@ function Dashboard() {
         top: 0,
         right: 0,
         bottom: 0,
-
         data: [
-          { value: 1048, name: 'Search Engine' },
-          { value: 735, name: 'Direct' },
-          { value: 580, name: 'Email' },
-          { value: 484, name: 'Union Ads' },
-          { value: 300, name: 'Video Ads' }
+          { value: 1048, name: 'Search Engine', itemStyle: { color: '#a23aff' } },
+          { value: 735, name: 'Direct', itemStyle: { color: '#3cb4fd' } },
+          { value: 580, name: 'Email', itemStyle: { color: '#ffd74e' } },
+          { value: 484, name: 'Union Ads', itemStyle: { color: '#ff67cc' } },
+          { value: 300, name: 'Video Ads', itemStyle: { color: '#00ff00' } }
         ],
-
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
@@ -334,15 +335,14 @@ function Dashboard() {
             shadowColor: 'rgba(0, 0, 0, 0.5)',
             normal: {
               label: false,
-              labelLine: false,
+              labelLine: false
             }
-
           }
         }
       }
     ]
-
   }
+  
 
   const performance = {
     xAxis: {
@@ -366,7 +366,7 @@ bottom: 10,
           [172.7, 105.2],
           [153.4, 42]
         ],
-        color: '#FF7F7F'
+        color: '#a23aff'
         
       },
       {
@@ -426,7 +426,7 @@ bottom: 10,
         [176.5, 71.8], [164.4, 55.5], [160.7, 48.6], [174.0, 66.4], [163.8, 67.3]
         ],
         itemStyle: {
-          color: '#FFA07A' // set a single color for all data points
+          color: '#ff8dfc' // set a single color for all data points
         }
       },
       

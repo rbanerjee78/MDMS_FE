@@ -9,67 +9,61 @@ export default function EventDashboard() {
     const [startDate, setStartDate] = useState(new Date());
 
     const eventchart = {
-        responsive: true,
-        maintainAspectRatio: false,
-        title: {
-          text: '',
-          subtext: '',
-          left: '-5%',
-          top: '-5%',
-          bottom: '-5%',
-          right: '-5%',
-          width: '500px'
-    
-        },
-    
-        tooltip: {
-          trigger: 'item'
-        },
-    
-        series: [
-          {
-            name: 'Access From',
-            type: 'pie',
-            radius: '100%',
-            label: false,
-            labelLine: false,
-            left: 5,
-            top: 0,
-            right: 0,
-            bottom: 0,
-    
-            data: [
-              { value: 1048, name: 'Search Engine' },
-              { value: 735, name: 'Direct' },
-              { value: 580, name: 'Email' },
-              { value: 484, name: 'Union Ads' },
-              { value: 300, name: 'Video Ads' }
-            ],
-    
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)',
-                normal: {
-                  label: false,
-                  labelLine: false,
-                }
-    
+      responsive: true,
+      maintainAspectRatio: false,
+      title: {
+        text: '',
+        subtext: '',
+        left: '-5%',
+        top: '-5%',
+        bottom: '-5%',
+        right: '-5%',
+        width: '500px'
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      series: [
+        {
+          name: 'Access From',
+          type: 'pie',
+          radius: '100%',
+          label: false,
+          labelLine: false,
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          data: [
+            { value: 1048, name: 'Search Engine', itemStyle: { color: '#ff8dfc' } },
+            { value: 735, name: 'Direct', itemStyle: { color: '#ffd74e' } },
+            { value: 580, name: 'Email', itemStyle: { color: '#ff67cc' } },
+            { value: 484, name: 'Union Ads', itemStyle: { color: '#00ff00' } },
+            { value: 300, name: 'Video Ads', itemStyle: { color: '#a23aff' } }
+          ],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+              normal: {
+                label: false,
+                labelLine: false
               }
             }
           }
-        ]
+        }
+      ]
     
       }
 
     return (
         <div className='container my-3' >
-            <div className=" main-card py-3 px-3 ">
+            <div className=" main-card bg-light py-3 px-3 ">
                 <div className="">
                     <h5 className='fw-bold'>Event Dashboard</h5>
                     <div className="d-flex align-items-stretch  mb-4 ">
-                        <div className="widget-card shadow-lg p-3 mb-2 me-3 bg-body rounded ">
+                        <div className="widget-card bg-light shadow-lg p-3 mb-2 me-3 bg-body rounded ">
                        
                       
                         <h5>Event Count</h5>
