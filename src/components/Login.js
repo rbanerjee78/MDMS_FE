@@ -4,7 +4,7 @@ import { loginSuccess, loginFailure } from "../redux/actions/authActions";
 import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
 
-const Login = ({ handleLogin, dispatchLoginSuccess, dispatchLoginFailure })  => {
+const Login = ({ handleLogin })  => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
