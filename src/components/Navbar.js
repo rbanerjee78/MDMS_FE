@@ -69,6 +69,16 @@ const Navbar = (props) => {
             </div>
           </li>
 
+          
+          <li className="nav-item dropdown">
+            <Link className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Vee Reports
+            </Link>
+            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+              <Link className="dropdown-item" to="/veereport">Profile wise check failure Reports</Link>
+                   </div>
+          </li>
+
           <li className="nav-item dropdown">
             <Link className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Exceptions
@@ -92,8 +102,8 @@ const Navbar = (props) => {
 
         </ul>
         <ul className="navbar-nav ms-auto me-3">
-          <li className="nav-item">
-            <img src={props.picture} alt="Profile" width="32" height="32" className="rounded-circle me-2" />
+        <li className="nav-item">
+          <img src={props.picture ? props.picture : '../../assets/images/avatar.png'} alt="Profile" width="32" height="32" className="rounded-circle me-2" />
           </li>
           <li className="nav-item ">
             <Link to='/' className="nav-link" > {props.name}</Link>

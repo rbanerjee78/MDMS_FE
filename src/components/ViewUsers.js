@@ -243,7 +243,7 @@ const fetchUsers = useCallback(async () => {
       'Content-Type': 'application/json'
     };
 
-     await fetch(`https://localhost:1100/api/customer/device/${deviceid}`, {
+     await fetch(`https://localhost:1100/api/customer/device/${deviceid}/`, {
       method: 'DELETE',
       headers: headers
     })

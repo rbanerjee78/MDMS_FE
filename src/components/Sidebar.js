@@ -90,7 +90,7 @@ export default function Sidebar(props) {
          
 
           <li className='text-left text-truncate'>
-            <Link to="/" className="nav-link link-dark ps-2">
+            <Link to="/veereport" className="nav-link link-dark ps-2">
               <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'VEE'}
             </Link>
           </li>
