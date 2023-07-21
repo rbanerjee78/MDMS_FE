@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactEcharts from "echarts-for-react";
 import * as echarts from 'echarts';
 import { connect } from 'react-redux';
@@ -11,7 +11,37 @@ import {
 } from '../redux/actions/dashboardActions';
 
 function Dashboard({ monthly, daily, outage, ondemand, performance, setDashboardData }) {
+  const [showAdditionalData, setShowAdditionalData] = useState(true);
 
+  const handleCheckboxChange = (event) => {
+    setShowAdditionalData(event.target.checked);
+  };
+
+  const getChartData = () => {
+    if (showAdditionalData) {
+      // Additional data series
+      const additionalDataSeries = [
+        { value: 100, name: 'New Data 1', itemStyle: { color: '#a23aff' } },
+        { value: 200, name: 'New Data 2', itemStyle: { color: '#ffd74e' } },
+        { value: 300, name: 'Video Ads', itemStyle: { color: '#ff67cc' } },
+        // Add more data points as needed
+      ];
+      return {
+        ...ondemand,
+        series: [
+          {
+            ...ondemand.series[0],
+            data: [...ondemand.series[0].data, ...additionalDataSeries],
+          },
+        ],
+      };
+    } else {
+      // Show initial data from Redux store
+      return ondemand;
+    }
+  };
+
+  const ondemandChartOptions = getChartData();
 
   
 
@@ -44,8 +74,13 @@ function Dashboard({ monthly, daily, outage, ondemand, performance, setDashboard
             </div>
             <div className="widget-card shadow-lg p-3 mb-2 me-3 bg-body rounded flex-fill">
               <h5>On Demand </h5>
-
-              <ReactEcharts option={ondemand}  />
+              <div>
+                <label>
+                  Show Additional Data:
+                  <input type="checkbox"  checked={showAdditionalData} onChange={handleCheckboxChange} />
+                </label>
+              </div>
+              <ReactEcharts option={ondemandChartOptions}   />
             </div>
 
             <div className="widget-card shadow-lg p-3 mb-2 me-3 bg-body rounded flex-fill">
@@ -91,6 +126,5 @@ const mapDispatchToProps = (dispatch) => ({
     }
   },
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

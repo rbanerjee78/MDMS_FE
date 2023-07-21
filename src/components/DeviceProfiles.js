@@ -3,104 +3,43 @@ import { faSearch, faPlus, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown, DropdownButton, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import moment from 'moment';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { setDevices, setDeviceAsDefault, getDevices } from "../redux/actions/deviceProfilesActions";
 
 
-export default function DeviceProfiles() {
+const DeviceProfiles = (props) => {
 
-
-    const [itemsPerPage, setItemsPerPage] = useState(10);
-   
+    const { devices, loading, error } = props;
+    const [itemsPerPage, setItemsPerPage] = useState(10);   
     const authToken = localStorage.getItem('authToken');
-
-
-    const [devices, setDevices] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
     const [selectAll, setSelectAll] = useState(false);
+    const dispatch = useDispatch(); 
+
+ 
+   
+
+ 
     const handleSelectAll = () => {
       setSelectAll(!selectAll);
     };
 
-    function getDevices(authToken, setDevices, setLoading, setError) {
-      
-      setLoading(true);
-      axios.get(`https://localhost:1100/api/deviceProfiles?pageSize=5&page=0`, {
-        headers: {
-          Accept: 'application/json',
-          'X-Authorization':`Bearer ${authToken}`  
-        },
-      })
-        .then((response) => {
-          if (response.data.data && response.data.data.length > 0) {
-            setDevices(response.data.data);
-          } else {
-            console.log('No devices found');
-          }
-          setLoading(false);
-        })
-        .catch((error) => {
-          setError(error);
-          setLoading(false);
-        });
-    }
+    useEffect(() => {
+      props.getDevices(authToken); // Dispatch the 'getDevices' action to fetch devices on mount
+    }, [dispatch, authToken]);
 
-
-    async function setDeviceAsDefault(deviceid) {
+    const handleSetDefault = async (deviceId) => {
       try {
-       // console.log(deviceid);
-        const response = await fetch(`https://localhost:1100/api/deviceProfile/${deviceid}/default`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Authorization':`Bearer ${authToken}`  
-          }
-        });
-    
-        const data = await response.json();
-        console.log(data);
-        if (response.ok) {
-          // call getDevices to retrieve updated list
-          getDevices(authToken, setDevices, setLoading, setError);
-        } else {
-          console.log('Error setting device as default');
-        }
-
+        await dispatch(setDeviceAsDefault(deviceId, authToken));
+        dispatch(getDevices(authToken));
       } catch (error) {
-        console.error(error);
+        console.error('Error setting device as default:', error);
       }
-    }
-    
-    
-    
+    };
 
-      useEffect(() => { 
-        setLoading(true);
-        axios.get(`https://localhost:1100/api/deviceProfiles?pageSize=5&page=0`, {
-          headers: {
-            Accept: 'application/json',
-            'X-Authorization':`Bearer ${authToken}`  
-          },
-        })
-          .then((response) => {
-            if (response.data.data && response.data.data.length > 0) {
-              setDevices(response.data.data);
-             // console.log(response.data.data);
-            } else {
-              console.log('No devices found');
-            }
-            setLoading(false);
-          })
-          .catch((error) => {
-            setError(error);
-            setLoading(false);
-          });
-      }, [authToken]);
-    
-     
-    
-      if (error) {
+    if (error) {
         return <div>Error: {error.message}</div>;
       }
     
@@ -165,18 +104,18 @@ export default function DeviceProfiles() {
 
 <div className='border-bottom pb-3 table-responsive'></div>
 <div> {loading && <div className="d-flex justify-content-center mt-4"><div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div></div>} </div>
+             <span className="visually-hidden">Loading...</span>
+           </div></div>}  </div>
                     <table className="table table-striped table-hover position-relative">
                         <thead>
                             <tr>
                                 <th>
                                 <input
-                  type="checkbox"
-                  className="checkbox"
-                  checked={selectAll}
-                  onChange={handleSelectAll}
-                />
+  type="checkbox"
+  className='checkbox'
+  checked={selectAll}
+  onChange={() => handleSelectAll()}
+/>
                                 </th>
                                 <th>
                                     Name
@@ -196,21 +135,40 @@ export default function DeviceProfiles() {
                             </thead>
                             <tbody>
                             
-        {devices && devices.length > 0 && devices.map((device, idx) => (
-          <tr key={idx}>
-            <td>
-            <input type="checkbox"
-                    className='checkbox'
-                    checked={selectAll}
-                    onChange={() => { }} />
-            </td>
-            <td>{device.name}</td>
-            <td>{device.description}</td>
-            <td><img src={device.image} alt={device.name} style={{}} /></td>
-            <td>{device.default?(<span className='badge bg-success'>Default</span>) : (<button className='btn border-secondary btn-sm' onClick={() => setDeviceAsDefault(device.id.id)}>Set As Default</button>)} </td>
-            <td>{moment(device.createdTime).format('L')}</td>
-          </tr>
-        ))}
+                            {props.devices && props.devices.length > 0 ? (
+  props.devices.map((device, idx) => (
+    <tr key={idx}>
+      <td>
+        <input
+          type="checkbox"
+          className='checkbox'
+          checked={selectAll}
+          onChange={() => { }}
+        />
+      </td>
+      <td>{device.name}</td>
+      <td>{device.description}</td>
+      <td><img src={device.image} alt={device.name} style={{}} /></td>
+      <td>
+        {device.default ? (
+          <span className='badge bg-success'>Default</span>
+        ) : (
+          <button
+            className='btn border-secondary btn-sm'
+            onClick={() => handleSetDefault(device.id.id)}
+          >
+            Set As Default
+          </button>
+        )}
+      </td>
+      <td>{moment(device.createdTime).format('L')}</td>
+    </tr>
+  ))
+) : (
+  <tr>
+    <td colSpan="6">No devices found.</td>
+  </tr>
+)}
       </tbody>
 
                     </table>
@@ -219,3 +177,20 @@ export default function DeviceProfiles() {
         </div>
     )
 }
+
+const mapStateToProps = (state) => ({
+  devices: state.deviceprofiles.devices, 
+  loading: state.deviceprofiles.loading, 
+  error: state.deviceprofiles.error, 
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      setDevices,
+      setDeviceAsDefault,
+      getDevices,
+    },
+    dispatch
+  );
+export default connect(mapStateToProps, mapDispatchToProps)(DeviceProfiles);

@@ -1,11 +1,5 @@
-// Import any necessary modules (e.g., axios for API calls)
+import { SET_DAILY_DATA, SET_MONTHLY_DATA, SET_OUTAGE_DATA, SET_ONDEMAND_DATA, SET_PERFORMANCE_DATA } from "./types";
 
-// Define action types
-export const SET_MONTHLY_DATA = 'SET_MONTHLY_DATA';
-export const SET_DAILY_DATA = 'SET_DAILY_DATA';
-export const SET_OUTAGE_DATA = 'SET_OUTAGE_DATA';
-export const SET_ONDEMAND_DATA = 'SET_ONDEMAND_DATA';
-export const SET_PERFORMANCE_DATA = 'SET_PERFORMANCE_DATA';
 
 // Define action creators
 export const setMonthlyData = (data) => ({

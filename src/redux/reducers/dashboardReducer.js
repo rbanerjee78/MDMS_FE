@@ -4,7 +4,7 @@ import {
     SET_OUTAGE_DATA,
     SET_ONDEMAND_DATA,
     SET_PERFORMANCE_DATA,
-  } from '../actions/dashboardActions';
+  } from '../actions/types';
 
   import * as echarts from 'echarts';
 
