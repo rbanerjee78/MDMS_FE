@@ -9,13 +9,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faRefresh, faSearch, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import moment from 'moment';
+import { connect } from 'react-redux';
+import {fetchAssets, deleteAsset} from '../redux/actions/assetActions';
 
-export default function AssetManagement(props) {
+
+function AssetManagement(props) {
   const [show, setShow] = useState(false);
   const [key, setKey] = useState('basic');
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [selectAll, setSelectAll] = useState(false);
-  const [assets, setAssets] = useState([]);
+
+  const { assets } = props;
+
 
   const handleClose = () => {
     setShow(false);
@@ -27,7 +32,9 @@ export default function AssetManagement(props) {
     setShow(true);
   };
 
-
+  useEffect(() => {
+    props.fetchAssets();
+  }, []);
  
 
   const handleSelectAll = () => {
@@ -35,15 +42,7 @@ export default function AssetManagement(props) {
   };
 
 
-  const fetchAssets = async () => {
-    axios.get('https://localhost:1100/GetAllAssetDetails')
-    .then(res => {
-      setAssets(res.data.data);
-    })
-    .catch(err => {
-      console.log(err);
-    })
-  }
+ 
 
   useEffect(() => {
     fetchAssets();
@@ -56,24 +55,7 @@ export default function AssetManagement(props) {
     if (!confirmed) {
       return;
     }
-    try {
-      const response = await fetch('https://localhost:1100/DeleteAssetDetail', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id: id.id })
-      });
-  
-      console.log(JSON.stringify({ id: id }))
-      if (response.ok) {
-        setAssets(assets.filter((asset) => asset.id.id !== id.id));
-      } else {
-        throw new Error('Failed to delete user');
-      }
-    } catch (error) {
-      console.error(error.message);
-    }
+    props.deleteAsset(id);
   };
 
   function AssetModal({ asset, show, onHide }) {
@@ -303,3 +285,9 @@ export default function AssetManagement(props) {
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  assets: state.assets.assets,
+});
+
+export default connect(mapStateToProps, { fetchAssets, deleteAsset })(AssetManagement);

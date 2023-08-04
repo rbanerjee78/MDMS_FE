@@ -48,7 +48,7 @@ const DeviceProfiles = (props) => {
     
     return (
         <div className='container my-3 '>
-            <div className=" main-card py-3 px-3">
+            <div className=" widget-card py-3 px-3">
                 <h5 className="fw-bold"><FontAwesomeIcon icon={faSearch} className='me-2' />View Device Profiles</h5>
                 <div className='widget-card table-responsive shadow-lg' style={{"minHeight":"50vh"}}>
 

@@ -44,7 +44,7 @@ export default function CreateMeter() {
         <div className='container my-3' >
             <div className=" main-card py-3 px-3 ">
                 <div className="">
-                    <h5 className='fw-bold'>CreateMeter</h5>
+                    <h5 className='fw-bold'>Create Meter</h5>
                     <div className="widget-card shadow-lg">
 
 

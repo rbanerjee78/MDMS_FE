@@ -179,7 +179,7 @@ const fetchUsers = useCallback(async () => {
 
   const updateUser = async (id, userCity, userState, userCountry, userTitle, userZip, userAddress) => {
     try {
-        const response = await axios.put(`https://localhost:1100/api/customer`, 
+        const response = await axios.put(`https://localhost:1100/api/customer/`, 
         {
             id,
             title:userTitle,
@@ -294,24 +294,24 @@ const fetchUsers = useCallback(async () => {
             <div className="alert alert-success" role="alert">User updated successfully!</div>
           }
               <div className='form-group d-grid mb-3'>
-                <label>Title<input className='form-control form-control-sm ' placeholder='Title' value={userById.title} onChange={handleTitleChange} /></label>
+                <label>Title<input className='form-control form-control-sm ' placeholder='Title' defaultValue={userById.title} onChange={handleTitleChange} /></label>
               </div>             
               <div className='form-group  d-grid mb-3'>
-                <label>Country<input className='form-control form-control-sm ' placeholder='Country' value={userById.country} onChange={handleCountryChange} /></label>
+                <label>Country<input className='form-control form-control-sm ' placeholder='Country' defaultValue={userById.country} onChange={handleCountryChange} /></label>
               </div>
               <div className='form-group  d-grid mb-3'>
-                <label>State<input className='form-control form-control-sm ' placeholder='State' value={userById.state}
+                <label>State<input className='form-control form-control-sm ' placeholder='State' defaultValue={userById.state}
                   onChange={handleStateChange} /></label>
               </div>
               <div className='form-group  d-grid mb-3'>
-                <label>City<input className='form-control form-control-sm ' placeholder='City' value={userById.city}
+                <label>City<input className='form-control form-control-sm ' placeholder='City' defaultValue={userById.city}
                   onChange={handleCityChange} /></label>
               </div>
               <div className='form-group  d-grid mb-3'>
-                <label>ZipCode<input className='form-control form-control-sm ' placeholder='ZipCode' value={userById.zip} onChange={handleZipChange} /></label>
+                <label>ZipCode<input className='form-control form-control-sm ' placeholder='ZipCode' defaultValue={userById.zip} onChange={handleZipChange} /></label>
               </div>
               <div className='form-group  d-grid mb-3'>
-                <label>Address<input className='form-control form-control-sm ' placeholder='Address' value={userById.address} onChange={handleAddressChange} /></label>
+                <label>Address<input className='form-control form-control-sm ' placeholder='Address' defaultValue={userById.address} onChange={handleAddressChange} /></label>
               </div>
   
   

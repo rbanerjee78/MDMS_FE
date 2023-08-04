@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import axios from "axios";
+import DarkMode from "./DarkMode";
 
 const Navbar = (props) => {
 
   const [credentialResponse, setCredentialResponse] = useState(null);
   const [userData, setUserData] = useState(null);
   const [token, setToken] = useState(null);
+  const { isDarkMode } = props;
 
 
   const logout = () => {
@@ -21,11 +23,11 @@ const Navbar = (props) => {
 
   const userExists = userData && userData.find(user => user.email === props.email);
 
-
+console.log(props)
 
   return (
 
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-lg p-3 bg-body ">
+    <nav className="navbar navbar-expand-lg  shadow-lg p-3 ">
 
       <button className="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
@@ -33,7 +35,15 @@ const Navbar = (props) => {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav  mb-2 mb-lg-0" style={{ paddingLeft: "20px" }}>
           <li className="nav-item">
-            <Link className="nav-link" to="/" style={{ paddingTop: "5px" }}>  <img src="../../assets/images/logo_black.svg" alt="logo" className="logo" /></Link>
+            <Link className="nav-link" to="/" style={{ paddingTop: "5px" }}> 
+        
+                      
+          {isDarkMode ? (
+        <img src='../../assets/images/logo_white.svg' alt="logo" className="logo" /> 
+      ) : (
+        <img src='../../assets/images/logo_black.svg' alt="logo" className="logo" /> 
+      )}
+             </Link>
           </li>
           <li className="nav-item">
             <NavLink className="nav-link" to="/dashboard">360 Dashboard</NavLink>
@@ -102,6 +112,9 @@ const Navbar = (props) => {
 
         </ul>
         <ul className="navbar-nav ms-auto me-3">
+          <li className="nav-item me-5 mt-2">
+          <DarkMode isDarkMode={props.isDarkMode} setIsDarkMode={props.setIsDarkMode} />
+          </li>
         <li className="nav-item">
           <img src={props.picture ? props.picture : '../../assets/images/avatar.png'} alt="Profile" width="32" height="32" className="rounded-circle me-2" />
           </li>

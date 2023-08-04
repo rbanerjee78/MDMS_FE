@@ -47,17 +47,17 @@ function Dashboard({ monthly, daily, outage, ondemand, performance, setDashboard
 
   return (
     <div className='container my-3' >
-      <div className=" main-card py-3 px-3 ">
+      <div className=" widget-card py-3 px-3 ">
         <div className="">
           <h5 className='fw-bold'>360 Dashboard</h5>
           <div className="d-flex align-items-stretch justify-content-center mb-4 search-row">
-  <div className="widget-card shadow-lg p-3 mb-2 me-3 bg-body rounded justify-content-center w-100">
+  <div className="widget-card shadow-lg p-3 mb-2 me-3  rounded justify-content-center w-100">
     <h5 className='pb-auto'>Monthly Usage </h5>
     <div className='d-grid'>
       <ReactEcharts option={monthly}  className='d-grid' />
     </div>
   </div>
-  <div className="widget-card shadow-lg p-3 mb-2 bg-body rounded justify-content-center w-100">
+  <div className="widget-card shadow-lg p-3 mb-2  rounded justify-content-center w-100">
     <h5>Daily Usage </h5>
     <div  className='d-grid'>
       <ReactEcharts option={daily}  className='d-grid' />
@@ -68,11 +68,11 @@ function Dashboard({ monthly, daily, outage, ondemand, performance, setDashboard
 
 
           <div className="d-flex align-items-stretch  mb-4 search-row">
-            <div className="widget-card shadow-lg p-3 mb-2 me-3 bg-body rounded flex-fill">
+            <div className="widget-card shadow-lg p-3 mb-2 me-3  rounded flex-fill">
               <h5>Outage & Events </h5>
               <ReactEcharts option={outage}  />
             </div>
-            <div className="widget-card shadow-lg p-3 mb-2 me-3 bg-body rounded flex-fill">
+            <div className="widget-card shadow-lg p-3 mb-2 me-3  rounded flex-fill">
               <h5>On Demand </h5>
               <div>
                 <label>
@@ -83,7 +83,7 @@ function Dashboard({ monthly, daily, outage, ondemand, performance, setDashboard
               <ReactEcharts option={ondemandChartOptions}   />
             </div>
 
-            <div className="widget-card shadow-lg p-3 mb-2 me-3 bg-body rounded flex-fill">
+            <div className="widget-card shadow-lg p-3 mb-2 me-3  rounded flex-fill">
               <h5>Performance Factors </h5>
               <ReactEcharts option={performance} />
             </div>

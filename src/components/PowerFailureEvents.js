@@ -29,7 +29,7 @@ export default function PowerFailureEvents() {
         } else {
           return (
             <div className='container my-3 '>
-      <div className=" main-card pt-3 px-3">
+      <div className="widget-card pt-3 px-3">
         <h5 className="fw-bold">Power Failure Events</h5>
         <div className='widget-card mb-4 shadow-lg '>
             <table className="table table-striped table-hover">

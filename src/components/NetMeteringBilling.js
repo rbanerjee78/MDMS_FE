@@ -3,7 +3,7 @@ import React from 'react'
 export default function NetMeteringBilling() {
   return (
     <div className='container my-3 '>
-    <div className=" main-card py-3 px-3">
+    <div className="widget-card py-3 px-3">
       <h5 className="fw-bold">Net Metering Billing</h5>
       <div className='widget-card table-responsive shadow-lg '>
       <table className="table table-striped table-hover">

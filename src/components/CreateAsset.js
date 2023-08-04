@@ -67,7 +67,7 @@ export default function CreateAsset() {
   return (
     <div className='container my-3 '>
             <div className=" main-card py-3 px-3">
-                <h5 className="fw-bold">Create User</h5>
+                <h5 className="fw-bold">Create Asset</h5>
                 <div className='widget-card shadow-lg mb-4'>
                     <form onSubmit={handleSubmit}>
                         

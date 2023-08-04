@@ -6,14 +6,14 @@ import markersData from '../markers.json';
 
 //AIzaSyAHtSqgkZ7PfaA5jtTBHVUZ4iQbVLa7pkE
 
-export default function Home() {
+export default function Home({isDarkMode}) {
 
     
 
 
     const MapContainer = ({ markers, isActive }) => {
 
-        const [selectedMarker, setSelectedMarker] = useState(null);
+  const [selectedMarker, setSelectedMarker] = useState(null);
   const [statusFilter, setStatusFilter] = useState("all");
   const [zoom, setZoom] = useState(12);
   const defaultCenter = { lat: 18.5204, lng: 73.8567 };
@@ -122,7 +122,7 @@ MapContainer.propTypes = {
       
         return (
           <div className='container my-3'>
-            <div className='widget-card w-100 pb-5'>
+            <div className={`widget-card ${isDarkMode ? 'dark-mode' : 'light-mode'} w-100 pb-5`} >
               <div>
                
                 <div style={{ height: '500px', width: '100%' }}>

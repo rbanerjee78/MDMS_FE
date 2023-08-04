@@ -4,49 +4,48 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faPlus, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown, DropdownButton, Button, Modal, Tabs, Tab, ModalFooter } from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  fetchDevicesRequest,
+  fetchDevicesSuccess,
+  fetchDevicesFailure,
+  assignDevice
+} from '../redux/actions/deviceActions'; 
+import { fetchUsers } from '../redux/actions/userActions';
 
 
 
 export default function TenantDevices() {
-
-  const [devices, setDevices] = useState([])
+  const dispatch = useDispatch();
+  const { devices, loading } = useSelector((state) => state.devices);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [key, setKey] = useState('basic');
   const [deviceId, setDeviceId] = useState(null);
 
-
-
-
-
-
-
-
-
-
   useEffect(() => {
-    setLoading(true);
     const fetchData = async () => {
-      const authToken = localStorage.getItem('authToken');
-      const headers = {
-        'Content-Type': 'application/json',
-        'X-Authorization': `Bearer ${authToken}`,
-        'Accept': '*/*',
-      };
-      const response = await axios.get('https://localhost:1100/api/tenant/devices?pageSize=5&page=0', { headers });
-      const data = response.data.data;
-      setDevices(response.data.data)
-      //console.log(data); // do something with the data
-      setLoading(false);
+      dispatch(fetchDevicesRequest());
+
+      try {
+        const authToken = localStorage.getItem('authToken');
+        const headers = {
+          'Content-Type': 'application/json',
+          'X-Authorization': `Bearer ${authToken}`,
+          'Accept': '*/*',
+        };
+        const response = await axios.get('https://localhost:1100/api/tenant/devices?pageSize=5&page=0', { headers });
+        const data = response.data.data;
+        dispatch(fetchDevicesSuccess(data));
+      } catch (error) {
+        dispatch(fetchDevicesFailure(error.message));
+      }
     };
+
     fetchData();
-  }, []); // The empty dependency array ensures that this effect runs only once, after the initial render.
-
-
-
+  }, []);
 
   const handleClick = (device) => {
     setSelectedDevice(device);
@@ -141,43 +140,33 @@ export default function TenantDevices() {
 
     };
 
-    useEffect(() => {
-      const fetchUsers = async () => {
-        try {
-          const response = await axios.get("https://localhost:1100/api/customers", config);
-          setUsers(response.data.data);
-          //console.log(response.data.data)
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-      fetchUsers();
+    const fetchUsers = useCallback(async () => {
+      try {
+        const response = await axios.get("https://localhost:1100/api/customers", config);
+       console.log(response);
+        setUsers(response.data.data);       
+      } catch (error) {
+        console.error(error.response.status, error.response.data.message);  
+      }
     }, []);
 
-    const assignconfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Authorization': `Bearer ${authToken}`
-      }
-    };
+    useEffect(() => {
+      fetchUsers();
+    }, [fetchUsers]);
+
+   
     
-    const handleAssignDevice = async () => {
-      try {
-        let url = `https://localhost:1100/api/customer/${selectedCustomerId}/device/${deviceid}`;
-       // console.log(url);
-        const response = await fetch(url, assignconfig);
-        const data = await response.json();
-       // console.log(data);
-        setSuccess(true);
-      } catch (error) {
-        console.error(error);
-      }
+    const handleAssignDevice = (customerId, deviceId) => {
+      dispatch(assignDevice(customerId, deviceId))
+        .then((data) => {
+          setSuccess(true);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     };
 
-
-    //console.log(deviceid)
+   // console.log(users)
     return (
       <Modal size="xl" show={showAssignModal} onHide={handleCloseAssignModal} deviceid={deviceId} animation={false}>
         <Modal.Header closeButton className="bg-violet">
@@ -193,12 +182,14 @@ export default function TenantDevices() {
           <div className="row"><div className="form-group col-md-6"><label className="d-flex flex-column">Device<input disabled type="text" className="form-control-sm mb-3" value={deviceid} /></label></div></div>
 
           <div className="row"><div className="form-group  col-md-6">
-            <label className="d-flex flex-column">Select Customer<select className="form-select form-select-sm mb-3" defaultValue={selectedCustomerId} onChange={(event) => setSelectedCustomerId(event.target.value)}>
+            <label className="d-flex flex-column">Select Customer
+            <select className="form-select form-select-sm mb-3" defaultValue={selectedCustomerId} onChange={(event) => setSelectedCustomerId(event.target.value)}>
               {users.map(user => (
                 <option key={user.id.id} value={user.id.id}>{user.name}</option>
               ))}
 
-            </select> </label></div></div>
+            </select> 
+            </label></div></div>
           <div className="row"><div className="col-md-6"> <button className="btn btn-primary btn-sm mb-3" onClick={handleAssignDevice}>Assign</button></div>
           </div>
 
@@ -218,7 +209,7 @@ export default function TenantDevices() {
   return (
 
     <div className='container my-3 '>
-      <div className=" main-card py-3 px-3">
+      <div className=" widget-card py-3 px-3">
         <h5 className="fw-bold"><FontAwesomeIcon icon={faSearch} className='me-2' />Tenant Devices</h5>
         <div className='widget-card table-responsive shadow-lg' style={{ "minHeight": "50vh" }}>
 

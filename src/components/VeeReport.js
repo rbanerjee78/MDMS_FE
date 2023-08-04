@@ -20,7 +20,7 @@ export default function VeeReport() {
 
   return (
     <div className='container my-3 '>
-    <div className=" main-card py-3 px-3">
+    <div className="widget-card py-3 px-3">
       <h5 className="fw-bold">Profile Wise Check Failure Report</h5>
       <div className='widget-card table-responsive shadow-lg '>
 

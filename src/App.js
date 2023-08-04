@@ -7,6 +7,7 @@ import NoPage from "./components/NoPage";
 import Sidebar from "./components/Sidebar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import jwtDecode from "jwt-decode";
+import DarkMode from "./components/DarkMode";
 import Login from "./components/Login";
 import { Provider } from "react-redux";
 import store from "./redux/store"; // Import the Redux store
@@ -37,7 +38,7 @@ function App() {
 
   const API_KEY = "364474069693-uvs67jjv58ufjq0cadmftddl63k4mfvf.apps.googleusercontent.com";
   const [credentialResponse, setCredentialResponse] = useState(null);
-
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   let responsePayload;
   if (credentialResponse) {
@@ -120,7 +121,7 @@ function App() {
 
 
 
-
+ 
   
  
  
@@ -136,9 +137,10 @@ function App() {
 
           <div className="wrapper">
             <Sidebar />
-            <div className="right-container bg-light">
+            <div className="right-container ">
+            
 
-              <Navbar handleClick={handleClick} isSidebarCollapsed={isSidebarCollapsed} username={loginresponse.username} />
+              <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} handleClick={handleClick} isSidebarCollapsed={isSidebarCollapsed} username={loginresponse.username} />
               <Suspense fallback={<div className="d-flex justify-content-center mt-4"><div className="spinner-border text-primary" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div></div>}>
