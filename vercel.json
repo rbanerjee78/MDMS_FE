@@ -1,0 +1,8 @@
+{
+  "name": "mdms-fe",
+  "build": {
+    "env": {
+      "CI": "false"
+    }
+  }
+}

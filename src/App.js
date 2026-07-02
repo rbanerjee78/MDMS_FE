@@ -7,13 +7,14 @@ import NoPage from "./components/NoPage";
 import Sidebar from "./components/Sidebar";
 import jwtDecode from "jwt-decode";
 import DarkMode from "./components/DarkMode";
-import Login from "./components/Login";
+// removed static Login import
 import { Provider } from "react-redux";
 import store from "./redux/store"; // Import the Redux store
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
 
+const Login = lazy(() => import("./components/Login"));
 const Home = lazy(() => import("./components/Home"));
 const Dashboard = lazy(() => import("./components/Dashboard"));
 const EventDashboard = lazy(() => import("./components/EventDashboard"));
