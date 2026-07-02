@@ -148,10 +148,12 @@ function App() {
             
 
               <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} handleClick={handleClick} isSidebarCollapsed={isSidebarCollapsed} currentUser={currentUser} />
-              <Suspense fallback={<div className="d-flex flex-column justify-content-center align-items-center" style={{ height: '70vh' }}>
-                <div className="premium-ring" style={{ width: '40px', height: '40px' }}></div>
-                <div className="premium-loader-text" style={{ fontSize: '13px' }}>Loading...</div>
-              </div>}>
+              <Suspense fallback={
+                <div className="d-flex flex-column justify-content-center align-items-center w-100" style={{ height: '70vh' }}>
+                  <div className="premium-ring"></div>
+                  <div className="premium-loader-text" style={{ fontSize: '14px', letterSpacing: '1px' }}>Loading Module...</div>
+                </div>
+              }>
                 <Routes>
                 <Route path="/" element={<Home />} />
                   <Route exact path="/dashboard" element={<Dashboard />} />
