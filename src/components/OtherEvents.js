@@ -1,3 +1,4 @@
+import PageHeader from './PageHeader';
 import React, { useState, useEffect } from 'react';
 
 
@@ -29,7 +30,7 @@ export default function OtherEvents() {
             return (
                 <div className='container my-3 '>
                     <div className=" main-card py-3 px-3">
-                        <h5 className="fw-bold">Other Events</h5>
+                        <PageHeader title="Other Events" subtitle="Monitor miscellaneous grid events" />
                         <div className='widget-card mb-4 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'>
                         <div className=" table-responsive">
                             <table className="table table-striped table-hover">

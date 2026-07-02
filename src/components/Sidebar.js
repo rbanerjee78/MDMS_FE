@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { faArrowAltCircleRight, faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faArrowAltCircleRight, faChartLine, faBars, 
+  faMicrochip, faBroadcastTower, faCubes, faNetworkWired, 
+  faLayerGroup, faChartPie, faClipboardCheck, faTachometerAlt, 
+  faCreditCard, faWrench 
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function Sidebar(props) {
@@ -25,7 +29,7 @@ export default function Sidebar(props) {
 
     
 
-      <div className={`d-flex flex-column  bg-violet  ${sidebarClass} shadow-lg p-3  bg-body  sidebar`}  >
+      <div className={`d-flex flex-column bg-violet ${sidebarClass} p-3 sidebar`}  >
         <div className='d-flex justify-content-end'>
           <button onClick={handleClick} style={{ background: "transparent", border: "none", color: "#ffffff" }}>
           
@@ -53,37 +57,37 @@ export default function Sidebar(props) {
         <ul className={`nav ${isSidebarCollapsed ? '' : 'nav-pills'} flex-column mb-auto`}>
           <li className='text-left text-truncate'>
             <Link to="/dashboard" className="nav-link link-dark  ps-2">
-              <FontAwesomeIcon icon={faChartLine} /> {isSidebarCollapsed ? '' : 'Dashboard'}
+              <FontAwesomeIcon icon={faChartLine} style={{ width: '20px' }} /> {isSidebarCollapsed ? '' : 'Dashboard'}
             </Link>
           </li>
           <li className='text-left text-truncate'>
             <Link to="/devicemanagement" className="nav-link link-dark  ps-2">
-              <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'Device Profiles'}
+              <FontAwesomeIcon icon={faMicrochip} style={{ width: '20px' }} /> {isSidebarCollapsed ? '' : 'Device Profiles'}
             </Link>
           </li>
           <li className='text-left text-truncate'>
             <Link to="/telemetry" className="nav-link link-dark  ps-2">
-              <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'Telemetry Data'}
+              <FontAwesomeIcon icon={faBroadcastTower} style={{ width: '20px' }} /> {isSidebarCollapsed ? '' : 'Telemetry Data'}
             </Link>
           </li>
            <li className='text-left text-truncate'>
             <Link to="/assetmanagement" className="nav-link link-dark  ps-2">
-              <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'Asset Management'}
+              <FontAwesomeIcon icon={faCubes} style={{ width: '20px' }} /> {isSidebarCollapsed ? '' : 'Asset Management'}
             </Link>
           </li>
           <li className='text-left text-truncate'>
-            <Link to="/" className="nav-link link-dark ps-2">
-              <FontAwesomeIcon icon={faArrowAltCircleRight} />   {isSidebarCollapsed ? '' : 'Comms & Data'}
+            <Link to="/comms-data" className="nav-link link-dark ps-2">
+              <FontAwesomeIcon icon={faNetworkWired} style={{ width: '20px' }} />   {isSidebarCollapsed ? '' : 'Comms & Data'}
             </Link>
           </li>
           <li className='text-left text-truncate'>
-            <Link to="/" className="nav-link link-dark ps-2">
-              <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'Aggregation'}
+            <Link to="/aggregation" className="nav-link link-dark ps-2">
+              <FontAwesomeIcon icon={faLayerGroup} style={{ width: '20px' }} /> {isSidebarCollapsed ? '' : 'Aggregation'}
             </Link>
           </li>
           <li className='text-left text-truncate'>
-            <Link to="/" className="nav-link link-dark ps-2">
-              <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'Consumption Analysis'}
+            <Link to="/consumption-analysis" className="nav-link link-dark ps-2">
+              <FontAwesomeIcon icon={faChartPie} style={{ width: '20px' }} /> {isSidebarCollapsed ? '' : 'Consumption Analysis'}
             </Link>
           </li>
 
@@ -91,23 +95,23 @@ export default function Sidebar(props) {
 
           <li className='text-left text-truncate'>
             <Link to="/veereport" className="nav-link link-dark ps-2">
-              <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'VEE'}
+              <FontAwesomeIcon icon={faClipboardCheck} style={{ width: '20px' }} /> {isSidebarCollapsed ? '' : 'VEE'}
             </Link>
           </li>
           <li className="text-left text-truncate">
-            <Link className="nav-link link-dark ps-2"  to="/">
-            <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'Performance Factors'}
+            <Link className="nav-link link-dark ps-2"  to="/performance-factors">
+            <FontAwesomeIcon icon={faTachometerAlt} style={{ width: '20px' }} /> {isSidebarCollapsed ? '' : 'Performance Factors'}
             </Link>
           </li>
           <li className="text-left text-truncate">
-            <Link className="nav-link link-dark ps-2"  to="/">
-            <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'Prepaid'}
+            <Link className="nav-link link-dark ps-2"  to="/prepaid">
+            <FontAwesomeIcon icon={faCreditCard} style={{ width: '20px' }} /> {isSidebarCollapsed ? '' : 'Prepaid'}
             </Link>
           </li>
 
           <li className="text-left text-truncate">
-            <Link className="nav-link link-dark ps-2"  to="/">
-            <FontAwesomeIcon icon={faArrowAltCircleRight} /> {isSidebarCollapsed ? '' : 'Service Orders'}
+            <Link className="nav-link link-dark ps-2"  to="/service-orders">
+            <FontAwesomeIcon icon={faWrench} style={{ width: '20px' }} /> {isSidebarCollapsed ? '' : 'Service Orders'}
             </Link>
           </li>
 

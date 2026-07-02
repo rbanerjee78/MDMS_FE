@@ -1,3 +1,4 @@
+import PageHeader from './PageHeader';
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -31,7 +32,7 @@ export default function CreateUser() {
           email,
         };
         try {
-          const response = await axios.post('https://localhost:1100/api/customer', payload, {
+          const response = await axios.post('http://localhost:5000/api/customer', payload, {
             headers: {
               'Content-Type': 'application/json',
               Accept: '*/*',
@@ -63,10 +64,10 @@ export default function CreateUser() {
     return (
         <div className='container my-3 '>
             <div className=" main-card py-3 px-3">
-                <h5 className="fw-bold">Create User</h5>
+                <PageHeader title="Create Customer" subtitle="Register a new customer account" />
                 <div className='widget-card shadow-lg mb-4'>
                 {success &&
-            <div className="alert alert-success alert-dismissible" role="alert">User created successfully!
+            <div className="alert alert-success alert-dismissible" role="alert">Customer created successfully!
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           }

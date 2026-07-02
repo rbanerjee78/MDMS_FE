@@ -1,111 +1,193 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { loginSuccess, loginFailure } from "../redux/actions/authActions";
-import axios from "axios";
-import { GoogleLogin } from "@react-oauth/google";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ handleLogin })  => {
+const Login = ({ handleLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const API_KEY = "364474069693-uvs67jjv58ufjq0cadmftddl63k4mfvf.apps.googleusercontent.com";
+  const navigate = useNavigate();
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
+  const handleUsernameChange = (event) => setUsername(event.target.value);
+  const handlePasswordChange = (event) => setPassword(event.target.value);
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleSubmit = async (event) => {
+  const handleEmailLogin = async (event) => {
     event.preventDefault();
+    setErrorMessage("");
     if (username.trim() === "" || password.trim() === "") {
-      alert("Please enter a valid username and password.");
+      setErrorMessage("Please enter a valid username/email and password.");
       return;
     }
 
     try {
-      const response = await axios.post("https://localhost:1100/api/auth/login", {
-        username,
-        password,
-      });
-
-      if (response.data.status === 401) {
-        // Handle 401 Unauthorized error here
-        console.log("Unauthorized access");
-        setErrorMessage("Invalid Username or Password");
-        return;
-      }
-
-      const authToken = response.data.token;
-      const refreshToken = response.data.refreshToken;
-      handleLogin(authToken, refreshToken);
+      // In a real scenario, 'username' would be an email for Firebase.
+      // Or we can append a domain if it's purely a username system.
+      // Assuming it's an email for this implementation.
+      const userCredential = await signInWithEmailAndPassword(auth, username, password);
+      const token = await userCredential.user.getIdToken();
+      if (handleLogin) handleLogin(token, token); // Just to preserve prop functionality
+      navigate("/"); // Redirect to dashboard
     } catch (error) {
       console.error(error);
-      alert("Invalid username or password.");
+      setErrorMessage("Invalid credentials or user not found.");
     }
   };
 
-
-
+  const handleGoogleLogin = async () => {
+    setErrorMessage("");
+    try {
+      const provider = new GoogleAuthProvider();
+      const userCredential = await signInWithPopup(auth, provider);
+      const token = await userCredential.user.getIdToken();
+      if (handleLogin) handleLogin(token, token);
+      navigate("/"); // Redirect to dashboard
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Google Sign-In failed.");
+    }
+  };
 
   return (
-    <div className="loginBackground d-flex">
-      <div className="loginSection text-center">
-        <div className="loginForm shadow-lg">
-          <img src="../../assets/images/logo_black.svg" className="img-fluid mb-4" alt="voltreum" />
-          <h5>Sign In To Voltreum MDMS</h5>
+    <div className="flex min-h-screen bg-gray-50 font-sans">
+      {/* Left Pane - Branding & Gradient */}
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between login-gradient p-12 text-white shadow-2xl relative overflow-hidden">
+        <div className="relative z-10">
+          <div className="flex items-center space-x-2 mb-16">
+            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-purple-600 font-bold text-xl">
+              ⚡
+            </div>
+            <span className="text-2xl font-bold tracking-tight">Voltreum</span>
+          </div>
 
-          <form onSubmit={handleSubmit}>
-            {errorMessage && (
-              <div className="alert alert-danger" role="alert">
-                {errorMessage}
-              </div>
-            )}
-            <div className="form-group" style={{ textAlign: "left" }}>
-              <label htmlFor="username">Username:</label>
+          <div className="inline-block px-3 py-1 mb-8 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-xs font-semibold uppercase tracking-widest text-green-300">
+            <span className="inline-block w-2 h-2 rounded-full bg-green-400 mr-2 animate-pulse"></span>
+            MDMS v4.2 • Live
+          </div>
+
+          <h1 className="text-5xl font-extrabold leading-tight mb-6">
+            The operating system<br />for renewable <span className="text-purple-200">grids.</span>
+          </h1>
+
+          <p className="text-lg text-white/80 max-w-md mb-12">
+            Ingest, validate and act on millions of smart meter readings — with the precision your utility demands.
+          </p>
+
+          <div className="flex space-x-4">
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-xl flex-1">
+              <div className="text-3xl font-bold mb-1">2.4M</div>
+              <div className="text-sm text-white/70">Endpoints</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-xl flex-1">
+              <div className="text-3xl font-bold mb-1">99.98%</div>
+              <div className="text-sm text-white/70">Uptime</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-4 rounded-xl flex-1">
+              <div className="text-3xl font-bold mb-1">&lt;200ms</div>
+              <div className="text-sm text-white/70">Read latency</div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="relative z-10 flex space-x-6 text-sm text-white/60 font-medium">
+          <span className="flex items-center"><svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg> ISO 27001</span>
+          <span className="flex items-center"><svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg> SOC 2 Type II</span>
+          <span className="flex items-center"><svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> IEC 61968</span>
+        </div>
+      </div>
+
+      {/* Right Pane - Login Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
+        <div className="w-full max-w-md">
+          <div className="mb-10 text-center lg:text-left">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h2>
+            <p className="text-gray-500">Sign in to your operations console to continue.</p>
+          </div>
+
+          {errorMessage && (
+            <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm font-medium border border-red-100">
+              {errorMessage}
+            </div>
+          )}
+
+          <form onSubmit={handleEmailLogin} className="space-y-5">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2" htmlFor="username">
+                Username / Email
+              </label>
               <input
-                className="form-control"
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 type="text"
                 id="username"
                 value={username}
                 onChange={handleUsernameChange}
+                placeholder="Enter your email"
               />
             </div>
-            <div style={{ textAlign: "left" }}>
-              <label htmlFor="password">Password:</label>
+            
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide" htmlFor="password">
+                  Password
+                </label>
+                <a href="#" className="text-xs font-semibold text-purple-600 hover:text-purple-800 transition-colors">Forgot?</a>
+              </div>
               <input
-                className="form-control"
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 type="password"
                 id="password"
                 value={password}
                 onChange={handlePasswordChange}
+                placeholder="••••••••"
               />
-
-              <div className="d-grid">
-                <button type="submit" className="btn btn-primary btn-md my-1">
-                  Login
-                </button>
-              </div>
             </div>
+
+            <div className="flex items-center">
+              <input
+                id="remember_me"
+                type="checkbox"
+                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded cursor-pointer"
+              />
+              <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-700 cursor-pointer">
+                Keep me signed in on this device
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-3 px-4 rounded-xl hover:from-purple-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all shadow-md flex justify-center items-center group"
+            >
+              Sign in to console
+              <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </button>
           </form>
 
-          <GoogleLogin
-            clientId={API_KEY} // Replace with your Google OAuth client ID
-            onSuccess={(credentialResponse) => {
-              console.log(credentialResponse);
-            }}
-            onError={() => {
-              console.log("Login Failed");
-            }}
-            buttonText="Sign in with Google"
-          />
+          <div className="mt-8 relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-white text-gray-400 text-xs uppercase tracking-widest font-semibold">Or</span>
+            </div>
+          </div>
 
-          <p style={{ color: "#000" }} className="px-5 py-3">
-            By signing in you agree to our{" "}
-            <span className="text-decoration-underline">Terms of Service</span>
-          </p>
+          <div className="mt-8">
+            <button
+              onClick={handleGoogleLogin}
+              className="w-full bg-white border border-gray-300 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-all flex justify-center items-center shadow-sm"
+            >
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-5 h-5 mr-3" alt="Google logo" />
+              Continue with SSO
+            </button>
+          </div>
+
+          <div className="mt-12 text-center text-xs text-gray-500">
+            Protected by Voltreum Identity · <a href="#" className="text-purple-600 hover:underline">Status</a>
+          </div>
         </div>
       </div>
     </div>

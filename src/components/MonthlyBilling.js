@@ -1,10 +1,11 @@
+import PageHeader from './PageHeader';
 import React from 'react'
 
 export default function MonthlyBilling() {
   return (
     <div className='container my-3 '>
     <div className=" main-card py-3 px-3">
-      <h5 className="fw-bold">Monthly Billing</h5>
+      <PageHeader title="Monthly Billing" subtitle="Analyze monthly endpoint consumption and billing" />
       <div className='widget-card table-responsive shadow-lg '>
       <table className="table table-striped table-hover">
             <thead>

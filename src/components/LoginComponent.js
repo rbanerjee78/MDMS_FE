@@ -18,7 +18,7 @@ export default function LoginComponent() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('https://localhost:1100/api/auth/login', {
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
         username,
         password,
       });

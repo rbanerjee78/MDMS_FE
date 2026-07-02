@@ -7,7 +7,7 @@ export const fetchAssets = () => async (dispatch) => {
   try {
     const authToken = localStorage.getItem('authToken');
 
-    const response = await axios.get('https://localhost:1100/GetAllAssetDetails', {
+    const response = await axios.get('http://localhost:5000/GetAllAssetDetails', {
       headers: {
         'Authorization': `Bearer ${authToken}`,
       },
@@ -26,7 +26,7 @@ export const deleteAsset = (id) => async (dispatch) => {
   try {
     const authToken = localStorage.getItem('authToken');
 
-    await axios.delete('https://localhost:1100/DeleteAssetDetail', {
+    await axios.delete('http://localhost:5000/DeleteAssetDetail', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authToken}`,

@@ -18,7 +18,7 @@ const ColumnSelectionTable = ({ data }) => {
     <div className='d-flex' style={{"gap":"10px"}}>
 
         
-     <div className='d-flex flex-column bg-light border px-1 py-1'> 
+     <div className='d-flex flex-column widget-card border px-1 py-1'> 
      <h6>Table Widget</h6>
      {data.map((column, index) => (
         <label  key={column} style={{"fontSize":"11px"}} className={index % 2 === 0 ? 'even text-nowrap' : 'odd text-nowrap' }>

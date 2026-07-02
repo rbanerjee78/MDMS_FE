@@ -1,30 +1,27 @@
 :root {
-  --widget-card-background-color: #ffffff;
-  --widget-card-background-color-light: #ffffff;
-  --widget-card-background-color-dark: #110637;
+  --sidebar-background-color: #1a103c;
   
+  --widget-card-background-color: #ffffff;
   --widget-card-foreground-color: #333333;
-  --widget-card-foreground-color-light: #333333;
-  --widget-card-foreground-color-dark: #ffffff;
-
+  
   --navbar-background-color: #ffffff;
-  --navbar-background-color-light: #ffffff;
-  --navbar-background-color-dark: #515186;
-
   --navbar-foreground-color: #333333;
-  --navbar-foreground-color-light: #333333;
-  --navbar-foreground-color-dark: #ffffff;
 
+  --wrapper-background-color: #f8f9fc;
+  --wrapper-foreground-color: #333333;
+}
 
-  --wrapper-background-color:#c8cfdc;
-  --wrapper-background-color-light: #ffffff;
-  --wrapper-background-color-dark: #050016;
-  --wrapper-foreground-color-light: #333333;
-  --wrapper-foreground-color-dark: #fffffff;
+[data-theme="dark"] {
+  --sidebar-background-color: #0f0923;
+  
+  --widget-card-background-color: #1a103c;
+  --widget-card-foreground-color: #ffffff;
+  
+  --navbar-background-color: #1a103c;
+  --navbar-foreground-color: #ffffff;
 
-  --wrapper-background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  --wrapper-background-image-dark: linear-gradient(135deg, #9c0ac0 0%, #2e0538 100%);
-  --wrapper-background-image-light: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --wrapper-background-color: #050016;
+  --wrapper-foreground-color: #ffffff;
 }
 
 html,
@@ -44,20 +41,16 @@ body, .form-control {
 
 
 
-.wrapper{
+.wrapper {
   display: flex; 
   align-items: stretch;
-  padding: 20px;
-  background:var(--wrapper-background-color);
-  background-image: var(--wrapper-background-image);
-  transition: 0.5s;
-
- 
+  padding: 0px;
+  background-color: var(--wrapper-background-color);
+  transition: background-color 0.5s;
 }
 
 .sidebar{
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
+  border-radius: 0px;
 }
 
 
@@ -114,13 +107,12 @@ input[type="number"] {
 }
 
 .navbar {
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
-    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
-    border-top-right-radius: 30px;
-    background-color: var(--navbar-background-color);
-    color:var(--navbar-foreground-color);
-    transition: 0.5s;
-
+  box-shadow: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 0px;
+  background-color: var(--navbar-background-color);
+  color: var(--navbar-foreground-color);
+  transition: background-color 0.5s, color 0.5s;
 }
 
 .widget-card {
@@ -128,10 +120,12 @@ input[type="number"] {
   background:var(--widget-card-background-color);
   color:var(--widget-card-foreground-color);
   min-width: 300px;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    transition: 0.5s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: 0.5s;
+}
 
+[data-theme="dark"] .widget-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -149,14 +143,10 @@ nav {
 }
 
 .bg-violet {
-  background: linear-gradient(
-    180deg,
-    #580b87 0%,
-    #515186 100%,
-    rgba(217, 217, 217, 0) 100%
-  );
+  background-color: var(--sidebar-background-color);
   color: #fff;
   width: 200px;
+  transition: background-color 0.5s;
 }
 
 
@@ -270,11 +260,52 @@ nav {
 .right-container {
   width: 100%;
   min-height: 100vh;
-  background:var(--wrapper-background-color);
-  color:var(--wrapper-foreground-color);
-  border-top-right-radius: 30px;
-  border-bottom-right-radius: 30px;
-  
+  background-color: var(--wrapper-background-color);
+  color: var(--wrapper-foreground-color);
+  border-radius: 0px;
+}
+
+/* Table overrides for Dark Mode */
+[data-theme="dark"] .table,
+[data-theme="dark"] table.table.table-striped.table-hover td,
+[data-theme="dark"] table.table.table-striped.table-hover th {
+  color: var(--widget-card-foreground-color) !important;
+  background-color: transparent !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) td,
+[data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) th {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="dark"] .table-hover tbody tr:hover td,
+[data-theme="dark"] .table-hover tbody tr:hover th {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .ant-table, 
+[data-theme="dark"] .ant-table-container, 
+[data-theme="dark"] .ant-table-cell,
+[data-theme="dark"] .ant-table-thead > tr > th {
+  background-color: var(--widget-card-background-color) !important;
+  color: var(--widget-card-foreground-color) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .ant-table-tbody > tr.ant-table-row:hover > td {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="dark"] .ant-card,
+[data-theme="dark"] .ant-picker {
+  background-color: var(--widget-card-background-color) !important;
+  color: var(--widget-card-foreground-color) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .ant-picker-input > input {
+  color: var(--widget-card-foreground-color) !important;
 }
 
 .open {
@@ -368,6 +399,14 @@ table.table.table-striped.table-hover td{
 
 .odd {
   background-color: #ffffff; 
+}
+
+[data-theme="dark"] .even {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .odd {
+  background-color: transparent;
 }
 
 

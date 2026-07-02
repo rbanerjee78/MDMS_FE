@@ -4,11 +4,12 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { Dropdown, DropdownButton, Pagination } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faMinus, faPlus, faRefresh, faSearch, faUserGroup, faUserMinus } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faMinus, faPlus, faRefresh, faSearch, faUserGroup, faUserMinus, faEllipsisV, faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import moment from 'moment';
+import { exportToCSV } from '../utils/exportUtils';
 
 
 
@@ -20,6 +21,9 @@ export default function ViewUsers() {
   const [success, setSuccess] = useState(false);
   const [devices, setDevices] = useState([]);
   const [userById, setUserById] = useState([]);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
 
 
   const handleShow = (user) => {
@@ -69,7 +73,7 @@ const deviceconfig = {
 const fetchDevices = useCallback(async (userId) => {
   setLoading(true); // Set loading to true before fetching data
   try {
-    const response = await axios.get(`https://localhost:1100/api/customer/${userId}/devices`, deviceconfig);
+    const response = await axios.get(`http://localhost:5000/api/customer/${userId}/devices`, deviceconfig);
     setDevices(response.data.data);
     console.log(response.data.data);
     setLoading(false); // Set loading to false after fetching data
@@ -84,13 +88,16 @@ const fetchDevices = useCallback(async (userId) => {
 const fetchUserById = useCallback(async (userId) => {
   //setLoading(true); // Set loading to true before fetching data
   try {
-    const response = await axios.get(`https://localhost:1100/api/customer/${userId}`, config);
+    const response = await axios.get(`http://localhost:5000/api/customer/${userId}`, config);
     setUserById(response.data);
     //console.log(response.data);
    // setLoading(false); // Set loading to false after fetching data
   } catch (error) {
-    console.error(error.response.status, error.response.data.message);
-   // setLoading(false); // Set loading to false on error as well
+    if (error.response) {
+      console.error(error.response.status, error.response.data?.message);
+    } else {
+      console.error("Network error or server down", error.message);
+    }
   }
 }, []);
 
@@ -99,16 +106,18 @@ const fetchUserById = useCallback(async (userId) => {
 const fetchUsers = useCallback(async () => {
     setLoading(true); // Set loading to true before fetching data
     try {
-      const response = await axios.get("https://localhost:1100/api/customers", config);
+      const response = await axios.get("http://localhost:5000/api/customers", config);
      // console.log(response);
       setUsers(response.data.data);
      // setTotalPages(response.data.totalPages);
       setLoading(false); // Set loading to false after fetching data
     } catch (error) {
-      console.error(error.response.status, error.response.data.message);
-
-      //console.error(error);
-     // setLoading(false); // Set loading to false on error as well
+      if (error.response) {
+        console.error(error.response.status, error.response.data?.message);
+      } else {
+        console.error("Network error or server down", error.message);
+      }
+      setLoading(false);
     }
   }, []);
 
@@ -127,7 +136,7 @@ const fetchUsers = useCallback(async () => {
         return;
       }
       try {
-        const response = await fetch(`https://localhost:1100/api/customer/${id.id}`, {
+        const response = await fetch(`http://localhost:5000/api/customer/${id.id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -159,11 +168,7 @@ const fetchUsers = useCallback(async () => {
     
     
 
-  //const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-
-  //const startIndex = currentPage * itemsPerPage;
-  // const usersToDisplay = users.slice(startIndex, startIndex + itemsPerPage);
+  //const currentPage = 0;
  
   function UserModal({ user, show, onHide }) {
   const [showSuccessToast, setShowSuccessToast] = useState(false); // Add this line to define showSuccessToast state variable
@@ -179,7 +184,7 @@ const fetchUsers = useCallback(async () => {
 
   const updateUser = async (id, userCity, userState, userCountry, userTitle, userZip, userAddress) => {
     try {
-        const response = await axios.put(`https://localhost:1100/api/customer/`, 
+        const response = await axios.put(`http://localhost:5000/api/customer/`, 
         {
             id,
             title:userTitle,
@@ -243,7 +248,7 @@ const fetchUsers = useCallback(async () => {
       'Content-Type': 'application/json'
     };
 
-     await fetch(`https://localhost:1100/api/customer/device/${deviceid}/`, {
+     await fetch(`http://localhost:5000/api/customer/device/${deviceid}`, {
       method: 'DELETE',
       headers: headers
     })
@@ -291,7 +296,7 @@ const fetchUsers = useCallback(async () => {
           <Tab eventKey="details" title="Details" >
             <div className=" ps-2 pt-2 ">
             {success &&
-            <div className="alert alert-success" role="alert">User updated successfully!</div>
+            <div className="alert alert-success" role="alert">Customer updated successfully!</div>
           }
               <div className='form-group d-grid mb-3'>
                 <label>Title<input className='form-control form-control-sm ' placeholder='Title' defaultValue={userById.title} onChange={handleTitleChange} /></label>
@@ -366,14 +371,32 @@ const fetchUsers = useCallback(async () => {
   return (
     <div className='container my-3 '>
       <div className=" main-card py-3 px-3">
-        <h5 className="fw-bold"><FontAwesomeIcon icon={faUserGroup} className='me-2'/>View Users</h5>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <nav aria-label="breadcrumb">
+              <ol className="breadcrumb mb-1" style={{ fontSize: '12px' }}>
+                <li className="breadcrumb-item text-muted">Home</li>
+                <li className="breadcrumb-item text-dark fw-bold" aria-current="page">Users</li>
+              </ol>
+            </nav>
+            <h2 className='fw-bold mb-1'><FontAwesomeIcon icon={faUserGroup} className='me-2'/>User Management</h2>
+            <p className="text-muted mb-0" style={{ fontSize: '13px' }}>View and manage customer accounts and access levels</p>
+          </div>
+          <div className="d-flex space-x-3 gap-2">
+            <button className="btn btn-light rounded-pill px-4 py-2 shadow-sm border-0" style={{ fontSize: '13px', fontWeight: '500' }} onClick={() => exportToCSV(users, 'users_report')}>Export report</button>
+          </div>
+        </div>
         <div className='widget-card shadow-lg mb-4'>
         
-          <div className='d-flex'>
-
-            <FontAwesomeIcon icon={faSearch} size="1x" className='me-3 pt-2'></FontAwesomeIcon>
+          <div className='d-flex mb-3 align-items-center'>
+            <FontAwesomeIcon icon={faSearch} size="1x" className='me-3 text-muted'></FontAwesomeIcon>
             <div className='form-group me-3'>
-              <input className='form-control form-control-sm'></input>
+              <input 
+                className='form-control form-control-sm'
+                placeholder='Search users...'
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
             <Dropdown className='me-3' >
 
@@ -442,13 +465,13 @@ const fetchUsers = useCallback(async () => {
                   checked={selectAll}
                   onChange={handleSelectAll}
                 /></th>
-                <th>Display Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <td>Created Time</td>
-                <th>Groups</th>
-                <th className='text-center'>Active</th>
-                <th>Actions</th>
+                <th className="border-0">Display Name</th>
+                <th className="border-0">Email</th>
+                <th className="border-0">Role</th>
+                <th className="border-0">Created Time</th>
+                <th className="border-0">Groups</th>
+                <th className='border-0 text-center'>Active</th>
+                <th className="border-0 text-center">Actions</th>
               </tr>
             </thead>
             {success &&
@@ -457,9 +480,19 @@ const fetchUsers = useCallback(async () => {
             </div>
           }
           
-            <tbody>
+            <tbody style={{ fontSize: '14px' }}>
           
-              {users.map((user) => (
+              {(() => {
+                  const filteredData = (users || []).filter(u => (u.title || u.email || '').toLowerCase().includes(searchTerm.toLowerCase()));
+                  const indexOfLastItem = currentPage * itemsPerPage;
+                  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+                  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
+                  if(filteredData.length === 0 && !loading) {
+                      return <tr><td colSpan="8" className="text-center text-muted py-4">No users found.</td></tr>;
+                  }
+
+                  return currentItems.map((user) => (
                 <>
               
               
@@ -475,21 +508,52 @@ const fetchUsers = useCallback(async () => {
                  <td>{moment(user.createdTime).format('L')}</td> 
                   <td>{user?.tenantId?.entityType}</td>
                   <td className='text-center'>
-                    <span><FontAwesomeIcon icon={faCheck} /></span>
+                    <span><FontAwesomeIcon icon={faCheck} className="text-success" /></span>
                   </td>
-                  <td>
-                   <Link onClick={() => handleDeleteUser(user.id)}> <FontAwesomeIcon icon={faUserMinus}  /></Link>
+                  <td className="text-center">
+                      <Dropdown align="end">
+                          <Dropdown.Toggle variant="light" size="sm" className="btn-icon shadow-sm rounded-circle border-0">
+                              <FontAwesomeIcon icon={faEllipsisV} className="text-muted" />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu className="shadow border-0 rounded-3" style={{ fontSize: '14px' }}>
+                              <Dropdown.Item onClick={() => handleShow(user)}><FontAwesomeIcon icon={faEye} className="me-2 text-primary" /> View Details</Dropdown.Item>
+                              <Dropdown.Item href="#/action-2"><FontAwesomeIcon icon={faEdit} className="me-2 text-warning" /> Edit</Dropdown.Item>
+                              <Dropdown.Divider />
+                              <Dropdown.Item onClick={() => handleDeleteUser(user.id)} className="text-danger"><FontAwesomeIcon icon={faTrash} className="me-2" /> Delete</Dropdown.Item>
+                          </Dropdown.Menu>
+                      </Dropdown>
                   </td>
                 </tr>
                 </>
-              ))}
-
+              ));
+              })()}
 
             </tbody>
           </table>
 
-
-
+          {/* Pagination Footer */}
+          {(users && users.length > 0) && (() => {
+              const filteredData = (users || []).filter(u => (u.title || u.email || '').toLowerCase().includes(searchTerm.toLowerCase()));
+              const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+              if(totalPages === 0) return null;
+              
+              return (
+              <div className="d-flex justify-content-between align-items-center mt-3 px-3 pb-3">
+                  <span className="text-muted" style={{ fontSize: '13px' }}>
+                      Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, filteredData.length)} of {filteredData.length} entries
+                  </span>
+                  <Pagination size="sm" className="mb-0">
+                      <Pagination.Prev onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} />
+                      {[...Array(totalPages)].map((_, i) => (
+                          <Pagination.Item key={i + 1} active={i + 1 === currentPage} onClick={() => setCurrentPage(i + 1)}>
+                              {i + 1}
+                          </Pagination.Item>
+                      ))}
+                      <Pagination.Next onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} />
+                  </Pagination>
+              </div>
+              );
+          })()}
 
         </div>
       </div>

@@ -26,13 +26,31 @@ export const assignDevice = (customerId, deviceId) => async (dispatch) => {
         'Accept': '*/*',
       };
   
-      const url = `https://localhost:1100/api/customer/${customerId}/device/${deviceId}/`;
+      const url = `http://localhost:5000/api/customer/${customerId}/device/${deviceId}`;
       const response = await axios.post(url, {}, { headers });
   
       const data = response.data;
   
   
       return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+export const unassignDevice = (deviceId) => async (dispatch) => {
+    try {
+      const authToken = localStorage.getItem('authToken');
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-Authorization': `Bearer ${authToken}`,
+        'Accept': '*/*',
+      };
+  
+      const url = `http://localhost:5000/api/customer/device/${deviceId}`;
+      const response = await axios.delete(url, { headers });
+  
+      return response.data;
     } catch (error) {
       throw error;
     }

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import axios from "axios";
 import DarkMode from "./DarkMode";
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
 
 const Navbar = (props) => {
 
@@ -11,19 +13,22 @@ const Navbar = (props) => {
   const { isDarkMode } = props;
 
 
-  const logout = () => {
-    setToken(null); // clear the token in the state
-    localStorage.removeItem('authToken'); // remove the token from the browser's local storage
-    localStorage.removeItem('refreshToken');
-    window.location.href = '/'; // redirect the user to the login page
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await signOut(auth);
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('refreshToken');
+      window.location.href = '/';
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
   }
 
-
- 
-
-  const userExists = userData && userData.find(user => user.email === props.email);
-
-console.log(props)
+  const { currentUser } = props;
+  const displayName = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User';
+  const initials = displayName.substring(0, 2).toUpperCase();
+  const photoURL = currentUser?.photoURL;
 
   return (
 
@@ -32,7 +37,7 @@ console.log(props)
       <button className="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      <div className="navbar-collapse d-flex w-100" id="navbarSupportedContent">
         <ul className="navbar-nav  mb-2 mb-lg-0" style={{ paddingLeft: "20px" }}>
           <li className="nav-item">
             <Link className="nav-link" to="/" style={{ paddingTop: "5px" }}> 
@@ -111,20 +116,42 @@ console.log(props)
 
 
         </ul>
-        <ul className="navbar-nav ms-auto me-3">
-          <li className="nav-item me-5 mt-2">
-          <DarkMode isDarkMode={props.isDarkMode} setIsDarkMode={props.setIsDarkMode} />
-          </li>
-        <li className="nav-item">
-          <img src={props.picture ? props.picture : '../../assets/images/avatar.png'} alt="Profile" width="32" height="32" className="rounded-circle me-2" />
-          </li>
-          <li className="nav-item ">
-            <Link to='/' className="nav-link" > {props.name}</Link>
-          </li>
-          <li className="nav-item ">
-            <a href="/" className="nav-link" onClick={logout}>Logout</a>
-          </li>
-        </ul>
+        <div className="d-flex align-items-center ms-auto me-3 space-x-4">
+          <div className="me-4 mt-2">
+            <DarkMode isDarkMode={props.isDarkMode} setIsDarkMode={props.setIsDarkMode} />
+          </div>
+          
+          {/* Mockup icons for notifications and messages */}
+          <div className="d-flex align-items-center me-4 space-x-3">
+            <button className="btn btn-light rounded-circle p-2 position-relative shadow-sm" style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-secondary"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+              <span className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+            </button>
+            <button className="btn btn-light rounded-circle p-2 position-relative shadow-sm" style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '10px' }}>
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-success"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
+              <span className="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle"></span>
+            </button>
+          </div>
+
+          <div className="dropdown">
+            <button className="btn btn-light rounded-pill p-1 shadow-sm d-flex align-items-center dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style={{ paddingRight: '12px' }}>
+              {photoURL ? (
+                <img src={photoURL} alt="Profile" className="rounded-circle me-2" style={{ width: '36px', height: '36px', objectFit: 'cover' }} />
+              ) : (
+                <div className="rounded-circle me-2 d-flex align-items-center justify-content-center text-white font-weight-bold" style={{ width: '36px', height: '36px', backgroundColor: '#a855f7', fontSize: '14px' }}>
+                  {initials}
+                </div>
+              )}
+              <div className="text-start me-2 d-none d-lg-block" style={{ lineHeight: '1.2' }}>
+                <div className="fw-bold text-dark" style={{ fontSize: '14px' }}>{displayName}</div>
+                <div className="text-muted" style={{ fontSize: '11px' }}>Grid Operator</div>
+              </div>
+            </button>
+            <ul className="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenuButton">
+              <li><button className="dropdown-item text-danger" onClick={handleLogout}>Logout</button></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </nav>
   )

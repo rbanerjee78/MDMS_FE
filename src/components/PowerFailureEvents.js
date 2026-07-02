@@ -1,3 +1,4 @@
+import PageHeader from './PageHeader';
 import React, { useState, useEffect } from "react";
 
 
@@ -30,7 +31,7 @@ export default function PowerFailureEvents() {
           return (
             <div className='container my-3 '>
       <div className="widget-card pt-3 px-3">
-        <h5 className="fw-bold">Power Failure Events</h5>
+        <PageHeader title="Power Failures" subtitle="Monitor and respond to grid power failures" />
         <div className='widget-card mb-4 shadow-lg '>
             <table className="table table-striped table-hover">
               <thead>

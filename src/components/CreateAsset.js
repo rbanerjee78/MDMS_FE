@@ -1,6 +1,10 @@
+import PageHeader from './PageHeader';
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 export default function CreateAsset() {
 
@@ -8,13 +12,14 @@ export default function CreateAsset() {
     const [type, setType] = useState('');
     const [label, setLabel] = useState('');
     const [assetProfileName, setAssetProfileName] = useState('');
+    const [showToast, setShowToast] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const assetId = uuidv4();
         const createdTime = moment().valueOf();
         try {
-            const response = await fetch('https://localhost:1100/InsertAssetDetail', {
+            const response = await fetch('http://localhost:5000/InsertAssetDetail', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,6 +60,7 @@ export default function CreateAsset() {
                 setType('');
                 setLabel('');
                 setAssetProfileName('');
+                setShowToast(true);
                 
             } else {
                 throw new Error('Failed to create asset');
@@ -67,7 +73,7 @@ export default function CreateAsset() {
   return (
     <div className='container my-3 '>
             <div className=" main-card py-3 px-3">
-                <h5 className="fw-bold">Create Asset</h5>
+                <PageHeader title="Create Asset" subtitle="Register a new asset to the grid infrastructure" />
                 <div className='widget-card shadow-lg mb-4'>
                     <form onSubmit={handleSubmit}>
                         
@@ -93,6 +99,19 @@ export default function CreateAsset() {
 
                 </div>
             </div>
+
+            <ToastContainer position="bottom-end" className="p-3" style={{ zIndex: 10000, position: 'fixed' }}>
+                <Toast onClose={() => setShowToast(false)} show={showToast} delay={4000} autohide className="border-0 shadow-lg" style={{ borderRadius: '0.5rem' }}>
+                    <Toast.Header className="bg-success text-white border-0" style={{ borderTopLeftRadius: '0.5rem', borderTopRightRadius: '0.5rem' }}>
+                        <FontAwesomeIcon icon={faCheckCircle} className="me-2" />
+                        <strong className="me-auto">Success</strong>
+                        <small>Just now</small>
+                    </Toast.Header>
+                    <Toast.Body className="bg-white" style={{ borderBottomLeftRadius: '0.5rem', borderBottomRightRadius: '0.5rem' }}>
+                        The new asset has been created successfully!
+                    </Toast.Body>
+                </Toast>
+            </ToastContainer>
         </div>
   )
 }

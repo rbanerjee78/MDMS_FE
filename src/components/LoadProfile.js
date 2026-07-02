@@ -1,3 +1,4 @@
+import PageHeader from './PageHeader';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
@@ -46,7 +47,7 @@ const paginatedData = searchResults.slice(offset, offset + itemsPerPage);
   return (
     <div className='container my-3 '>
       <div className=" main-card py-3 px-3">
-        <h5 className="fw-bold">Load Profile</h5>
+        <PageHeader title="Load Profile" subtitle="Analyze power load distributions and metrics" />
         <div className='widget-card shadow-lg '>
           <div className='d-flex justify-content-start search-row'>
             <div className="mb-3 mx-3">

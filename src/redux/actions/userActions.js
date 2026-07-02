@@ -26,7 +26,7 @@ export const fetchUsersSuccess = (users) => ({
           page: 0,
         },
       };
-      const response = await axios.get('https://localhost:1100/api/customers', config);
+      const response = await axios.get('http://localhost:5000/api/customers', config);
       dispatch(fetchUsersSuccess(response.data.data));
       console.log(response.data)
     } catch (error) {
@@ -42,7 +42,7 @@ export const fetchUsersSuccess = (users) => ({
         'Content-Type': 'application/json',
         'X-Authorization': `Bearer ${authToken}`,
       };
-      const response = await fetch(`https://localhost:1100/api/customer/${userId.id}`, {
+      const response = await fetch(`http://localhost:5000/api/customer/${userId.id}`, {
         method: 'DELETE',
         headers: headers,
         body: JSON.stringify({ id: userId.id }),
@@ -71,7 +71,7 @@ export const fetchUsersSuccess = (users) => ({
         // Make the API call to update the user on the server
         const authToken = localStorage.getItem('authToken');
         const response = await axios.put(
-          `https://localhost:1100/api/customer`,
+          `http://localhost:5000/api/customer`,
           {
             id: userId,
             title: userTitle,

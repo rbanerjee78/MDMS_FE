@@ -5,13 +5,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import NoPage from "./components/NoPage";
 import Sidebar from "./components/Sidebar";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import jwtDecode from "jwt-decode";
 import DarkMode from "./components/DarkMode";
 import Login from "./components/Login";
 import { Provider } from "react-redux";
 import store from "./redux/store"; // Import the Redux store
-
+import { auth } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 
 const Home = lazy(() => import("./components/Home"));
@@ -30,51 +30,27 @@ const DeviceProfiles = lazy(() => import("./components/DeviceProfiles"));
 const CustomerDevices = lazy(() => import("./components/CustomerDevices"));
 const TenantDevices = lazy(() => import("./components/TenantDevices"));
 const Telemetry = lazy(() => import("./components/Telemetry"));
-
-
-
-
+const CreateDevice = lazy(() => import("./components/CreateDevice"));
+const CreateProfile = lazy(() => import("./components/CreateProfile"));
+const Aggregation = lazy(() => import("./components/Aggregation"));
+const CommsData = lazy(() => import("./components/CommsData"));
+const ConsumptionAnalysis = lazy(() => import("./components/ConsumptionAnalysis"));
+const PerformanceFactors = lazy(() => import("./components/PerformanceFactors"));
+const Prepaid = lazy(() => import("./components/Prepaid"));
+const ServiceOrders = lazy(() => import("./components/ServiceOrders"));
 function App() {
-
-  const API_KEY = "364474069693-uvs67jjv58ufjq0cadmftddl63k4mfvf.apps.googleusercontent.com";
-  const [credentialResponse, setCredentialResponse] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
-
-  let responsePayload;
-  if (credentialResponse) {
-    // Decode credential response to get payload
-    responsePayload = jwtDecode(credentialResponse.credential);
-
-    // Add default role to payload
-    responsePayload.role = "tenant";
-
-    // Retrieve existing users from local storage
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-
-    // Check if users is an array before calling find method
-    if (Array.isArray(users)) {
-      // Find user with same email, if any
-      const existingUser = users.find((user) => user.email === responsePayload.email);
-
-      if (existingUser) {
-        // Update existing user details
-        Object.assign(existingUser, responsePayload);
-      } else {
-        // Add new user to existing users list
-        users.push(responsePayload);
-      }
-
-      // Save updated users list to local storage
-      //localStorage.setItem("users", JSON.stringify(users));
-    } else {
-      console.log("Users is not an array");
-    }
-  }
-
-
 
 
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+    }
+  }, [isDarkMode]);
 
   const handleClick = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
@@ -85,14 +61,22 @@ function App() {
   
   const [authToken, setAuthToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
-  const [loginresponse, setLoginResponse] = useState(null);
+  const [loginresponse, setLoginResponse] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-   
-    setTimeout(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+        setLoginResponse(true);
+      } else {
+        setCurrentUser(null);
+        setLoginResponse(false);
+      }
       setLoading(false);
-    }, 2000);
+    });
+    return () => unsubscribe();
   }, []);
 
   if (loading) {
@@ -128,7 +112,6 @@ function App() {
   return (
     <Provider store={store}>
     <BrowserRouter>
-      <GoogleOAuthProvider clientId={API_KEY}>
         {!loginresponse ? (
                    
                    <Login handleLogin={handleLogin} />
@@ -140,7 +123,7 @@ function App() {
             <div className="right-container ">
             
 
-              <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} handleClick={handleClick} isSidebarCollapsed={isSidebarCollapsed} username={loginresponse.username} />
+              <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} handleClick={handleClick} isSidebarCollapsed={isSidebarCollapsed} currentUser={currentUser} />
               <Suspense fallback={<div className="d-flex justify-content-center mt-4"><div className="spinner-border text-primary" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div></div>}>
@@ -160,8 +143,15 @@ function App() {
                   <Route exact path="/devicemanagement" element={<DeviceProfiles />} />
                   <Route exact path="/customerdevices" element={<CustomerDevices />} />
                   <Route exact path="/tenantdevices" element={<TenantDevices />} />
+                  <Route exact path="/createdevice" element={<CreateDevice />} />
+                  <Route exact path="/createprofile" element={<CreateProfile />} />
                   <Route exact path="/telemetry" element={<Telemetry />} />
-
+                  <Route exact path="/aggregation" element={<Aggregation />} />
+                  <Route exact path="/comms-data" element={<CommsData />} />
+                  <Route exact path="/consumption-analysis" element={<ConsumptionAnalysis />} />
+                  <Route exact path="/performance-factors" element={<PerformanceFactors />} />
+                  <Route exact path="/prepaid" element={<Prepaid />} />
+                  <Route exact path="/service-orders" element={<ServiceOrders />} />
 
                   <Route exact path="*" element={<NoPage />} />
                 </Routes>
@@ -170,7 +160,6 @@ function App() {
           </div>
 
         )}
-      </GoogleOAuthProvider>
     </BrowserRouter>
     </Provider>
   );
