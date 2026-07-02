@@ -36,7 +36,7 @@ export default function TenantDevices() {
       try {
         const authToken = localStorage.getItem('authToken');
         const headers = { 'X-Authorization': `Bearer ${authToken}`, 'Accept': '*/*' };
-        const response = await axios.get('http://localhost:5000/api/customers', { headers });
+        const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/customers`, { headers });
         const map = {};
         response.data.data.forEach(c => {
           map[c.id.id] = c.title || c.name || c.email;
@@ -57,7 +57,7 @@ export default function TenantDevices() {
           'X-Authorization': `Bearer ${authToken}`,
           'Accept': '*/*',
         };
-        const response = await axios.get('http://localhost:5000/api/tenant/devices?pageSize=100&page=0', { headers });
+        const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/tenant/devices?pageSize=100&page=0`, { headers });
         const data = response.data.data;
         dispatch(fetchDevicesSuccess(data));
       } catch (error) {
@@ -183,7 +183,7 @@ export default function TenantDevices() {
 
     const fetchUsers = useCallback(async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/customers", config);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/customers`, config);
        console.log(response);
         setUsers(response.data.data);       
       } catch (error) {

@@ -4,7 +4,15 @@ const bodyParser = require('body-parser');
 const admin = require('firebase-admin');
 
 // Initialize Firebase Admin
-const serviceAccount = require('./serviceaccountkey.json');
+let serviceAccount;
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  // Parse the JSON string from the environment variable (for Render deployment)
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+} else {
+  // Fallback to local file for development
+  serviceAccount = require('./serviceaccountkey.json');
+}
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });

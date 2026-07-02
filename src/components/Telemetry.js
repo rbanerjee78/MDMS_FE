@@ -22,7 +22,7 @@ export default function Telemetry() {
       setLoading(true);
       try {
         const authToken = localStorage.getItem('authToken');
-        const response = await axios.get("http://localhost:5000/api/tenant/devices", {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/tenant/devices`, {
           headers: { "X-Authorization": `Bearer ${authToken}` }
         });
         setDevices(response.data.data || []);

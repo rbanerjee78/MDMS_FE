@@ -20,7 +20,7 @@ export default function CreateProfile() {
                 createdTime: Date.now()
             };
             
-            const response = await axios.post('http://localhost:5000/api/deviceProfile', payload, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/deviceProfile`, payload, {
                 headers: { 'Content-Type': 'application/json' }
             });
             

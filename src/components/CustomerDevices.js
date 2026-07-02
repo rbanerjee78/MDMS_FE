@@ -22,7 +22,7 @@ export default function CustomerDevices() {
                 'X-Authorization': `Bearer ${authToken}`,
                 "Accept": "*/*",
             };
-            const response = await axios.get('http://localhost:5000/api/customer/712476e0-ce64-11ed-9b15-dd2dac50548f/devices?pageSize=100&page=0', { headers });
+            const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/customer/712476e0-ce64-11ed-9b15-dd2dac50548f/devices?pageSize=100&page=0`, { headers });
             setDevices(response.data.data || []);
         } catch(error) {
             console.error(error);

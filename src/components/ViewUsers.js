@@ -73,7 +73,7 @@ const deviceconfig = {
 const fetchDevices = useCallback(async (userId) => {
   setLoading(true); // Set loading to true before fetching data
   try {
-    const response = await axios.get(`http://localhost:5000/api/customer/${userId}/devices`, deviceconfig);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/customer/${userId}/devices`, deviceconfig);
     setDevices(response.data.data);
     console.log(response.data.data);
     setLoading(false); // Set loading to false after fetching data
@@ -88,7 +88,7 @@ const fetchDevices = useCallback(async (userId) => {
 const fetchUserById = useCallback(async (userId) => {
   //setLoading(true); // Set loading to true before fetching data
   try {
-    const response = await axios.get(`http://localhost:5000/api/customer/${userId}`, config);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/customer/${userId}`, config);
     setUserById(response.data);
     //console.log(response.data);
    // setLoading(false); // Set loading to false after fetching data
@@ -106,7 +106,7 @@ const fetchUserById = useCallback(async (userId) => {
 const fetchUsers = useCallback(async () => {
     setLoading(true); // Set loading to true before fetching data
     try {
-      const response = await axios.get("http://localhost:5000/api/customers", config);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/customers`, config);
      // console.log(response);
       setUsers(response.data.data);
      // setTotalPages(response.data.totalPages);
@@ -136,7 +136,7 @@ const fetchUsers = useCallback(async () => {
         return;
       }
       try {
-        const response = await fetch(`http://localhost:5000/api/customer/${id.id}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/customer/${id.id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -184,7 +184,7 @@ const fetchUsers = useCallback(async () => {
 
   const updateUser = async (id, userCity, userState, userCountry, userTitle, userZip, userAddress) => {
     try {
-        const response = await axios.put(`http://localhost:5000/api/customer/`, 
+        const response = await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/customer/`, 
         {
             id,
             title:userTitle,
@@ -248,7 +248,7 @@ const fetchUsers = useCallback(async () => {
       'Content-Type': 'application/json'
     };
 
-     await fetch(`http://localhost:5000/api/customer/device/${deviceid}`, {
+     await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/customer/device/${deviceid}`, {
       method: 'DELETE',
       headers: headers
     })

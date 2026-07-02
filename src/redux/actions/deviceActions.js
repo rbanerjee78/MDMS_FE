@@ -26,7 +26,7 @@ export const assignDevice = (customerId, deviceId) => async (dispatch) => {
         'Accept': '*/*',
       };
   
-      const url = `http://localhost:5000/api/customer/${customerId}/device/${deviceId}`;
+      const url = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/customer/${customerId}/device/${deviceId}`;
       const response = await axios.post(url, {}, { headers });
   
       const data = response.data;
@@ -47,7 +47,7 @@ export const unassignDevice = (deviceId) => async (dispatch) => {
         'Accept': '*/*',
       };
   
-      const url = `http://localhost:5000/api/customer/device/${deviceId}`;
+      const url = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/customer/device/${deviceId}`;
       const response = await axios.delete(url, { headers });
   
       return response.data;

@@ -32,7 +32,7 @@ export default function CreateUser() {
           email,
         };
         try {
-          const response = await axios.post('http://localhost:5000/api/customer', payload, {
+          const response = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/customer`, payload, {
             headers: {
               'Content-Type': 'application/json',
               Accept: '*/*',

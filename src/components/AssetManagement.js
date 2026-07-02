@@ -66,7 +66,7 @@ function AssetManagement(props) {
 
     const updateAsset = async (id, name, type, label, assetProfileName) => {
       try {
-        const response = await axios.put('http://localhost:5000/UpdateAssetDetail', {
+        const response = await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/UpdateAssetDetail`, {
           id,
           name: name,
           type: type,

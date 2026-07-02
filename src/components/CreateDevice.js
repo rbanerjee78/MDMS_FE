@@ -20,7 +20,7 @@ export default function CreateDevice() {
                 customerId: null
             };
             
-            const response = await axios.post('http://localhost:5000/api/device', payload, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/device`, payload, {
                 headers: { 'Content-Type': 'application/json' }
             });
             
