@@ -62,9 +62,9 @@ const Navbar = (props) => {
           </li>
 
           <li className="nav-item dropdown">
-            <Link className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href="#" onClick={(e) => e.preventDefault()} className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
              Devices
-            </Link>
+            </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <Link className="dropdown-item" to="/tenantdevices">Tenant Devices</Link>
             
@@ -73,9 +73,9 @@ const Navbar = (props) => {
 
 
           <li className="nav-item dropdown">
-            <Link className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href="#" onClick={(e) => e.preventDefault()} className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Billing  Reports
-            </Link>
+            </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <Link className="dropdown-item" to="/monthlybilling">Monthly Billing Report</Link>
               <Link className="dropdown-item" to="/dailybilling">Daily Billing Report</Link>
@@ -86,28 +86,28 @@ const Navbar = (props) => {
 
           
           <li className="nav-item dropdown">
-            <Link className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href="#" onClick={(e) => e.preventDefault()} className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Vee Reports
-            </Link>
+            </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <Link className="dropdown-item" to="/veereport">Profile wise check failure Reports</Link>
                    </div>
           </li>
 
           <li className="nav-item dropdown">
-            <Link className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href="#" onClick={(e) => e.preventDefault()} className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Exceptions
-            </Link>
+            </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <Link className="dropdown-item" href="/">TOU Validation Report</Link>
-              <Link className="dropdown-item" href="/">Energy Loss Report</Link>
-              <Link className="dropdown-item" href="/">Unidentified Meters</Link>
-              <Link className="dropdown-item" href="/">Billing Estimation</Link>
-              <Link className="dropdown-item" href="/">Missing Intervals</Link>
-              <Link className="dropdown-item" href="/">High Usage Report</Link>
-              <Link className="dropdown-item" href="/">Meter Change Report</Link>
-              <Link className="dropdown-item" href="/">Suspected & Defective Meter Report</Link>
-              <Link className="dropdown-item" href="/">Load violation report</Link>
+              <Link className="dropdown-item" to="/">TOU Validation Report</Link>
+              <Link className="dropdown-item" to="/">Energy Loss Report</Link>
+              <Link className="dropdown-item" to="/">Unidentified Meters</Link>
+              <Link className="dropdown-item" to="/">Billing Estimation</Link>
+              <Link className="dropdown-item" to="/">Missing Intervals</Link>
+              <Link className="dropdown-item" to="/">High Usage Report</Link>
+              <Link className="dropdown-item" to="/">Meter Change Report</Link>
+              <Link className="dropdown-item" to="/">Suspected & Defective Meter Report</Link>
+              <Link className="dropdown-item" to="/">Load violation report</Link>
 
             </div>
           </li>
