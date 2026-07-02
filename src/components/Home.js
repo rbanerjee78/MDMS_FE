@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import { MapContainer as LeafletMap, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import L from 'leaflet';
 import PropTypes from "prop-types";
 
 import markersData from '../markers.json';
 
-//AIzaSyAHtSqgkZ7PfaA5jtTBHVUZ4iQbVLa7pkE
+// Fix for default Leaflet icons in React
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 
 export default function Home({isDarkMode}) {
 
@@ -16,8 +23,7 @@ export default function Home({isDarkMode}) {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [statusFilter, setStatusFilter] = useState("all");
   const [zoom, setZoom] = useState(12);
-  const defaultCenter = { lat: 18.5204, lng: 73.8567 };
-  const API_KEY = "AIzaSyAHtSqgkZ7PfaA5jtTBHVUZ4iQbVLa7pkE";
+  const defaultCenter = [18.5204, 73.8567];
 
   const filteredMarkers = markers.filter(marker => {
     if (statusFilter === "all") {
@@ -38,18 +44,36 @@ export default function Home({isDarkMode}) {
     setZoom(12);
   };
 
-   const activeIcon = {
-    url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
-    
-  };
+   const activeIcon = new L.Icon({
+    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
   
-  const inactiveIcon = {
-    url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
-    
-  }; 
+  const inactiveIcon = new L.Icon({
+    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  }); 
+
+  const MapUpdater = ({ center, zoom }) => {
+    const map = useMap();
+    useEffect(() => {
+      map.setView(center, zoom);
+    }, [center, zoom, map]);
+    return null;
+  };
+
+  const currentCenter = selectedMarker ? [selectedMarker.latitude, selectedMarker.longitude] : defaultCenter;
 
   return (
-    <LoadScript googleMapsApiKey={API_KEY}>
+    <>
       <div className="col-lg-5 d-flex my-2">
         <div className='form-check'>
           <label className='me-3 form-check-label'>
@@ -70,17 +94,28 @@ export default function Home({isDarkMode}) {
           </label>
         </div>
       </div>
-      <GoogleMap mapContainerStyle={{ width: "100%", height: "100%" }} zoom={zoom} center={selectedMarker ? { lat: selectedMarker.latitude, lng: selectedMarker.longitude } : defaultCenter}>
-        {filteredMarkers.map((marker) => (
-          <Marker key={marker.meterNo} position={{ lat: marker.latitude, lng: marker.longitude }} onClick={() => handleMarkerClick(marker)} icon={marker.status === "active" ? activeIcon : inactiveIcon} />
-        ))}
-        {selectedMarker && (
-          <InfoWindow position={{ lat: selectedMarker.latitude, lng: selectedMarker.longitude }} onCloseClick={() => setSelectedMarker(null)}>
-            <div>Meter Number: {selectedMarker.meterNo}</div>
-          </InfoWindow>
-        )}
-      </GoogleMap>
-    </LoadScript>
+      <div style={{ width: "100%", height: "400px" }}>
+        <LeafletMap center={defaultCenter} zoom={zoom} style={{ width: "100%", height: "100%", zIndex: 1 }}>
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <MapUpdater center={currentCenter} zoom={zoom} />
+          {filteredMarkers.map((marker) => (
+            <Marker 
+              key={marker.meterNo} 
+              position={[marker.latitude, marker.longitude]} 
+              eventHandlers={{ click: () => handleMarkerClick(marker) }}
+              icon={marker.status === "active" ? activeIcon : inactiveIcon}
+            >
+              <Popup>
+                <div>Meter Number: {marker.meterNo}</div>
+              </Popup>
+            </Marker>
+          ))}
+        </LeafletMap>
+      </div>
+    </>
   );
 };
 
