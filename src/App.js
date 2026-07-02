@@ -132,9 +132,14 @@ function App() {
     <Provider store={store}>
     <BrowserRouter>
         {!loginresponse ? (
-                   
-                   <Login handleLogin={handleLogin} />
-
+          <Suspense fallback={
+            <div className="premium-loader-container" style={{ height: '100vh' }}>
+              <div className="premium-ring"></div>
+              <div className="premium-loader-text">Loading MDMS</div>
+            </div>
+          }>
+            <Login handleLogin={handleLogin} />
+          </Suspense>
         ) : (
 
           <div className="wrapper">

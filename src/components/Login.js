@@ -10,6 +10,7 @@ const Login = ({ handleLogin }) => {
   const [password, setPassword] = useState("123456");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleUsernameChange = (event) => setUsername(event.target.value);
@@ -23,10 +24,8 @@ const Login = ({ handleLogin }) => {
       return;
     }
 
+    setIsSubmitting(true);
     try {
-      // In a real scenario, 'username' would be an email for Firebase.
-      // Or we can append a domain if it's purely a username system.
-      // Assuming it's an email for this implementation.
       const userCredential = await signInWithEmailAndPassword(auth, username, password);
       const token = await userCredential.user.getIdToken();
       if (handleLogin) handleLogin(token, token); // Just to preserve prop functionality
@@ -34,11 +33,13 @@ const Login = ({ handleLogin }) => {
     } catch (error) {
       console.error(error);
       setErrorMessage("Invalid credentials or user not found.");
+      setIsSubmitting(false);
     }
   };
 
   const handleGoogleLogin = async () => {
     setErrorMessage("");
+    setIsSubmitting(true);
     try {
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(auth, provider);
@@ -48,11 +49,19 @@ const Login = ({ handleLogin }) => {
     } catch (error) {
       console.error(error);
       setErrorMessage("Google Sign-In failed.");
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 font-sans">
+    <div className="flex min-h-screen bg-gray-50 font-sans relative">
+      {isSubmitting && (
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white/40 backdrop-blur-md">
+          <div className="premium-ring"></div>
+          <div className="premium-loader-text text-gray-800">Authenticating...</div>
+        </div>
+      )}
+      
       {/* Left Pane - Branding & Gradient */}
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between login-gradient p-12 text-white shadow-2xl relative overflow-hidden">
         <div className="relative z-10">
