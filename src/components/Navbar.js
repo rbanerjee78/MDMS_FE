@@ -136,7 +136,7 @@ const Navbar = (props) => {
           <div className="dropdown">
             <button className="btn btn-light rounded-pill p-1 shadow-sm d-flex align-items-center dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style={{ paddingRight: '12px' }}>
               {photoURL ? (
-                <img src={photoURL} alt="Profile" className="rounded-circle me-2" style={{ width: '36px', height: '36px', objectFit: 'cover' }} />
+                <img src={photoURL} alt="Profile" className="rounded-circle me-2" referrerPolicy="no-referrer" style={{ width: '36px', height: '36px', objectFit: 'cover' }} />
               ) : (
                 <div className="rounded-circle me-2 d-flex align-items-center justify-content-center text-white font-weight-bold" style={{ width: '36px', height: '36px', backgroundColor: '#a855f7', fontSize: '14px' }}>
                   {initials}
