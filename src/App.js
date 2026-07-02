@@ -11,7 +11,8 @@ import DarkMode from "./components/DarkMode";
 import { Provider } from "react-redux";
 import store from "./redux/store"; // Import the Redux store
 import { auth } from "./firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import useIdleTimeout from "./hooks/useIdleTimeout";
 
 
 const Login = lazy(() => import("./components/Login"));
@@ -65,6 +66,22 @@ function App() {
   const [loginresponse, setLoginResponse] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
+
+  // Auto-logout after 15 minutes of inactivity
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.clear();
+      setAuthToken(null);
+      setRefreshToken(null);
+      setLoginResponse(false);
+      console.log("Session expired due to inactivity");
+    } catch (error) {
+      console.error("Error logging out", error);
+    }
+  };
+
+  useIdleTimeout(handleLogout, 15);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
