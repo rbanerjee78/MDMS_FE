@@ -48,7 +48,7 @@ flowchart TD
 - The browser downloads this bundle and the React app runs on the user's machine.
 
 ### 2. The Backend (Vercel Serverless Functions)
-- Previously, you had a separate Node.js server running 24/7 on Render (`mdms-backend-ymsu.onrender.com`).
+- Previously, you had a separate Node.js server running 24/7 on Render.
 - We migrated this into a **Serverless Architecture** by moving your Express API logic into the `/api` folder of your React repository.
 - Vercel automatically detects the `/api` folder and turns each file into a secure, on-demand serverless function. 
 - When the frontend makes an API call (e.g., fetching devices), Vercel spins up a lightweight server instance for a few milliseconds, processes the request, returns the data, and then shuts it down. This is **free, blazing fast, and scales infinitely**.
