@@ -1,70 +1,48 @@
-# Getting Started with Create React App
+# MDMS (Meter Data Management System)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A unified full-stack application built to manage meter devices, profiles, and tenant information. The application integrates securely with Google Cloud Firebase and is deployed globally via Vercel.
 
-## Available Scripts
+## Tech Stack
 
-In the project directory, you can run:
+*   **Frontend:** React (Bootstrapped with Create React App), React Bootstrap, Axios for data fetching.
+*   **Backend:** Serverless Node.js/Express API (deployed as Vercel Serverless Functions).
+*   **Database:** Google Cloud Firestore (NoSQL).
+*   **Authentication:** Firebase Authentication & JWT verification via Firebase Admin SDK.
+*   **Deployment:** Vercel (Frontend + Serverless API).
 
-### `npm start`
+## Security Overview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The MDMS platform implements a robust security architecture using **JSON Web Tokens (JWT)**:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1.  **Authentication:** Users log in on the frontend via Firebase Authentication. A secure JWT is issued upon successful authentication and stored securely.
+2.  **API Requests:** The frontend explicitly appends this JWT to the headers (`X-Authorization: Bearer <token>`) of every API request sent to the backend.
+3.  **Global Middleware:** The backend is protected by a global Express middleware (`checkAuth`). This middleware intercepts incoming requests and uses the Firebase Admin SDK (`admin.auth().verifyIdToken()`) to cryptographically verify the JWT against Google's servers.
+4.  **Authorization:** If the token is valid, the request is allowed to fetch or modify data in Firestore. If the token is missing, expired, or invalid, the backend immediately drops the request and returns a `401 Unauthorized` response.
 
-### `npm test`
+## Development
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To run the project locally, you will need to set up the necessary environment variables.
 
-### `npm run build`
+### Environment Variables
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Create a `.env` file in the root directory:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+REACT_APP_API_URL=http://localhost:5000 # Use this for local API calls, omit in production to use relative paths.
+FIREBASE_SERVICE_ACCOUNT={"type": "service_account", "project_id": "mdms-...", ...} # Firebase Admin SDK credentials (JSON string).
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Running Locally
 
-### `npm run eject`
+To run the React frontend:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm install
+npm start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The application will be available at [http://localhost:3000](http://localhost:3000).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Architecture Details
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For a detailed breakdown of the system logic, data flow, and serverless implementation, please see the [architecture.md](./architecture.md) documentation.

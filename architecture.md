@@ -58,3 +58,10 @@ flowchart TD
 - The Serverless backend interacts with the Firestore Database using the `Firebase Admin SDK`.
 - Secure connection to Firebase is established using a service account credentials object stored safely within Vercel's Environment Variables (`FIREBASE_SERVICE_ACCOUNT`).
 - Data queried from Firestore is parsed, formatted into JSON, and returned back down the chain to the React frontend where it populates the UI state.
+
+### 4. Security and Authentication Flow
+- All API routes are protected by a global `checkAuth` Express middleware (`api/routes/api.js`).
+- When a user logs in, Firebase Authentication issues a JWT (JSON Web Token). The frontend stores this token in `localStorage`.
+- For every subsequent API request (GET, POST, PUT), the frontend retrieves this token and appends it to the request headers (`X-Authorization: Bearer <token>`).
+- The backend intercepts the request and verifies the JWT using the `Firebase Admin SDK` (`admin.auth().verifyIdToken()`).
+- If the token is valid, the request proceeds to the Firestore data fetch logic. If missing or invalid, it immediately returns a `401 Unauthorized` response.
