@@ -1,6 +1,6 @@
 import PageHeader from './PageHeader';
 import React, {useState, useEffect} from 'react';
-import { faSearch, faPlus, faRefresh, faEllipsisV, faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faPlus, faRefresh, faEllipsisV, faEye, faEdit, faTrash, faMicrochip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown, DropdownButton, Button, Pagination } from 'react-bootstrap';
 import { Link } from "react-router-dom";
@@ -93,12 +93,11 @@ const DeviceProfiles = (props) => {
                     <table className="table table-hover align-middle mb-0">
                         <thead className="table-light text-muted" style={{ fontSize: '13px', textTransform: 'uppercase' }}>
                             <tr>
-                                <th>
-                                    <input type="checkbox" className='checkbox' checked={selectAll} onChange={() => handleSelectAll()} />
+                                <th className="border-0" style={{width: '40px'}}>
+                                    <input type="checkbox" className='checkbox' checked={selectAll} onChange={handleSelectAll} />
                                 </th>
-                                <th className="border-0">Name</th>
+                                <th className="border-0">Profile Name</th>
                                 <th className="border-0">Description</th>
-                                <th className="border-0">Image</th>
                                 <th className="border-0">Default</th>
                                 <th className="border-0">Created Time</th>
                                 <th className="border-0 text-center">Actions</th>
@@ -116,13 +115,23 @@ const DeviceProfiles = (props) => {
                                 }
 
                                 return currentItems.map((device, idx) => (
-                                    <tr key={idx}>
+                                    <tr key={idx} className="align-middle">
                                         <td>
                                             <input type="checkbox" className='checkbox' checked={selectedDevices.includes(device.id.id)} onChange={() => handleSelectDevice(device.id.id)} />
                                         </td>
-                                        <td className="fw-bold">{device.name}</td>
+                                        <td className="fw-bold">
+                                            <div className="d-flex align-items-center">
+                                                <div className="d-flex align-items-center justify-content-center bg-light text-primary rounded-circle me-3" style={{ width: '40px', height: '40px' }}>
+                                                    {device.image ? (
+                                                        <img src={device.image} alt={device.name} style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '50%' }} />
+                                                    ) : (
+                                                        <FontAwesomeIcon icon={faMicrochip} size="lg" />
+                                                    )}
+                                                </div>
+                                                {device.name}
+                                            </div>
+                                        </td>
                                         <td className="text-muted">{device.description}</td>
-                                        <td><img src={device.image} alt={device.name} style={{ width: '40px', height: '40px', objectFit: 'contain' }} /></td>
                                         <td>
                                             {device.default ? (
                                                 <span className='badge bg-success rounded-pill'>Default</span>
