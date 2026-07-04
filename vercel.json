@@ -3,7 +3,7 @@
   "build": {
     "env": {
       "CI": "false",
-      "REACT_APP_API_URL": "https://mdms-backend-ymsu.onrender.com"
+      "REACT_APP_API_URL": "https://mdms-fe.vercel.app"
     }
   },
   "headers": [
