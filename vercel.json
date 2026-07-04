@@ -39,6 +39,26 @@
   ],
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/GetAllAssetDetails",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/InsertAssetDetail",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/UpdateAssetDetail",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/DeleteAssetDetail",
+      "destination": "/api/index.js"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
