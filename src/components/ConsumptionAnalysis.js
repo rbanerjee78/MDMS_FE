@@ -16,7 +16,10 @@ export default function ConsumptionAnalysis() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/consumptionData`);
+                const authToken = localStorage.getItem('authToken');
+                const response = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/consumptionData`, {
+                    headers: { 'X-Authorization': `Bearer ${authToken}` }
+                });
                 if(response.data && response.data.data) {
                     setData(response.data.data);
                 }
