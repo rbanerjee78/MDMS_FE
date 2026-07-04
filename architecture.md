@@ -8,35 +8,33 @@ Your system is now a modern, unified, full-stack application hosted entirely on 
 
 ```mermaid
 flowchart TD
-    %% Define Styles
     classDef frontend fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px,color:#fff
     classDef backend fill:#10b981,stroke:#047857,stroke-width:2px,color:#fff
     classDef database fill:#f59e0b,stroke:#b45309,stroke-width:2px,color:#fff
     classDef auth fill:#f43f5e,stroke:#be123c,stroke-width:2px,color:#fff
 
-    subgraph User Device
-        Browser[User Browser (React App)]
+    subgraph user_device [User Device]
+        Browser[User Browser - React App]
     end
 
-    subgraph Vercel Global Edge Network
-        UI[Static Frontend Delivery (React)]
-        API[Serverless Backend Functions (Node.js/Express)]
+    subgraph vercel [Vercel Global Edge Network]
+        UI[Static Frontend Delivery - React]
+        API[Serverless Backend Functions - Node.js/Express]
     end
 
-    subgraph Google Cloud / Firebase
+    subgraph firebase [Google Cloud / Firebase]
         Firestore[(Firestore Database)]
         FirebaseAuth[Firebase Authentication]
     end
 
-    Browser -- "1. Loads UI" --> UI
-    UI -. "2. Renders in Browser" .-> Browser
-    Browser -- "3. Data Requests (/api/*)" --> API
-    Browser -- "Authenticates" --> FirebaseAuth
-    API -- "4. Query Data (Firebase Admin SDK)" --> Firestore
-    Firestore -- "5. Returns JSON Data" --> API
-    API -- "6. Sends JSON Response" --> Browser
+    Browser -->|1. Loads UI| UI
+    UI -.->|2. Renders in Browser| Browser
+    Browser -->|3. Data Requests API| API
+    Browser -->|Authenticates| FirebaseAuth
+    API -->|4. Query Data Admin SDK| Firestore
+    Firestore -->|5. Returns JSON Data| API
+    API -->|6. Sends JSON Response| Browser
 
-    %% Apply Styles
     class Browser,UI frontend
     class API backend
     class Firestore database
