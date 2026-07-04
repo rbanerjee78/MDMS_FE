@@ -76,6 +76,8 @@ function AssetManagement(props) {
             entityType: 'TENANT',
             id: '08fd5e60-c400-11ed-b62c-7d8052ad39cf'
           }
+        }, {
+          headers: { 'X-Authorization': `Bearer ${localStorage.getItem('authToken')}` }
         });
 
         if (response && response.data) {
